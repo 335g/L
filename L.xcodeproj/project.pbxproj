@@ -10,6 +10,7 @@
 		843061691D23FB4D009A6B1B /* L.h in Headers */ = {isa = PBXBuildFile; fileRef = 843061681D23FB4D009A6B1B /* L.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		843061701D23FB4D009A6B1B /* L.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843061651D23FB4D009A6B1B /* L.framework */; };
 		843061751D23FB4D009A6B1B /* LTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843061741D23FB4D009A6B1B /* LTests.swift */; };
+		843061811D23FC9E009A6B1B /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843061801D23FC9E009A6B1B /* Bass.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		8430616F1D23FB4D009A6B1B /* LTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		843061741D23FB4D009A6B1B /* LTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTests.swift; sourceTree = "<group>"; };
 		843061761D23FB4D009A6B1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		843061801D23FC9E009A6B1B /* Bass.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bass.framework; path = Carthage/Checkouts/Bass/build/Debug/Bass.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843061811D23FC9E009A6B1B /* Bass.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +59,7 @@
 				843061671D23FB4D009A6B1B /* L */,
 				843061731D23FB4D009A6B1B /* LTests */,
 				843061661D23FB4D009A6B1B /* Products */,
+				8430617F1D23FC9E009A6B1B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -84,6 +88,14 @@
 				843061761D23FB4D009A6B1B /* Info.plist */,
 			);
 			path = LTests;
+			sourceTree = "<group>";
+		};
+		8430617F1D23FC9E009A6B1B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				843061801D23FC9E009A6B1B /* Bass.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,6 +334,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = L/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -341,6 +354,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = L/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -395,6 +409,7 @@
 				8430617B1D23FB4D009A6B1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8430617C1D23FB4D009A6B1B /* Build configuration list for PBXNativeTarget "LTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +418,7 @@
 				8430617E1D23FB4D009A6B1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

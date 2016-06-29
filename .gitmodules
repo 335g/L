@@ -1,0 +1,3 @@
+[submodule "Carthage/Checkouts/Bass"]
+	path = Carthage/Checkouts/Bass
+	url = https://github.com/335g/Bass.git
