@@ -6,6 +6,16 @@ import Bass
 
 public protocol IsoType: PrismType, GetterType {}
 
+public extension IsoType {
+	public func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource {
+		return (reverseGet • f • get)(x)
+	}
+	
+	public func tryGet(from: Source) -> Either<AltSource, Target> {
+		return .right(get(from: from))
+	}
+}
+
 // MARK: - LIso
 
 public struct LIso<S, T, A, B> {
@@ -26,10 +36,6 @@ extension LIso: IsoType {
 	
 	public func get(from: S) -> A {
 		return _get(from)
-	}
-	
-	public func tryGet(from: S) -> Either<T, A> {
-		return .right(get(from: from))
 	}
 	
 	public func reverseGet(from: B) -> T {
@@ -63,10 +69,6 @@ extension Iso: IsoType {
 	
 	public func get(from: S) -> A {
 		return _get(from)
-	}
-	
-	public func tryGet(from: S) -> Either<S, A> {
-		return .right(get(from: from))
 	}
 	
 	public func reverseGet(from: A) -> S {
