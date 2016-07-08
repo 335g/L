@@ -4,6 +4,26 @@
 
 public protocol LensType: GetterType, SetterType {}
 
+public extension LensType {
+	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
+		return LSetter(modify: modify)
+	}
+}
+
+public extension LensType where Source == AltSource, Target == AltTarget {
+	public var asSetter: Setter<Source, Target> {
+		return Setter(modify: modify)
+	}
+	
+	public var asGetter: Getter<Source, Target> {
+		return Getter(get: get)
+	}
+	
+	public var asLens: Lens<Source, Target> {
+		return Lens(get: get, set: set)
+	}
+}
+
 // MARK: - LLens
 
 public struct LLens<S, T, A, B> {

@@ -18,6 +18,22 @@ public extension PrismType {
 	}
 }
 
+public extension PrismType {
+	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
+		return LSetter(modify: modify)
+	}
+}
+
+public extension PrismType where Source == AltSource, Target == AltTarget {
+	public var asSetter: Setter<Source, Target> {
+		return Setter(modify: modify)
+	}
+	
+	public var asPrism: Prism<Source, Target> {
+		return Prism(tryGet: tryGet, reverseGet: reverseGet)
+	}
+}
+
 public extension PrismType where Source == AltSource {
 	public static func prism(tryGet: (Source) -> Target?, reverseGet: (AltTarget) -> Source) -> LPrism<Source, Source, Target, AltTarget> {
 		let g: (Source) -> Either<Source, Target> = { source in

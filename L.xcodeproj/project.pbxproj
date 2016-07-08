@@ -17,6 +17,7 @@
 		8430618B1D241356009A6B1B /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8430618A1D241356009A6B1B /* Bass.framework */; };
 		84C2E0821D2E8A7600B0CD30 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0811D2E8A7600B0CD30 /* Iso.swift */; };
 		84C2E0841D2FB8F800B0CD30 /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0831D2FB8F800B0CD30 /* Lens.swift */; };
+		84C2E08A1D2FC89C00B0CD30 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0891D2FC89C00B0CD30 /* Composition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		8430618A1D241356009A6B1B /* Bass.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bass.framework; path = "../../../../Library/Developer/Xcode/DerivedData/L-egozsgukkidexhhiplzvzhhpkaxi/Build/Products/Debug/Bass.framework"; sourceTree = "<group>"; };
 		84C2E0811D2E8A7600B0CD30 /* Iso.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Iso.swift; sourceTree = "<group>"; };
 		84C2E0831D2FB8F800B0CD30 /* Lens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lens.swift; sourceTree = "<group>"; };
+		84C2E0891D2FC89C00B0CD30 /* Composition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				8415FFD11D2D20E4001F8F96 /* Prism.swift */,
 				84C2E0831D2FB8F800B0CD30 /* Lens.swift */,
 				84C2E0811D2E8A7600B0CD30 /* Iso.swift */,
+				84C2E0891D2FC89C00B0CD30 /* Composition.swift */,
 				8430616A1D23FB4D009A6B1B /* Info.plist */,
 			);
 			path = L;
@@ -232,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				843061831D23FDB2009A6B1B /* Optics.swift in Sources */,
+				84C2E08A1D2FC89C00B0CD30 /* Composition.swift in Sources */,
 				8415FFD41D2D23DC001F8F96 /* Getter.swift in Sources */,
 				84C2E0821D2E8A7600B0CD30 /* Iso.swift in Sources */,
 				8415FFD61D2D2415001F8F96 /* Setter.swift in Sources */,

@@ -16,6 +16,42 @@ public extension IsoType {
 	}
 }
 
+public extension IsoType {
+	public var asLLens: LLens<Source, AltSource, Target, AltTarget> {
+		return LLens(get: get, set: set)
+	}
+	
+	public var asLPrism: LPrism<Source, AltSource, Target, AltTarget> {
+		return LPrism(tryGet: tryGet, reverseGet: reverseGet)
+	}
+	
+	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
+		return LSetter(modify: modify)
+	}
+}
+
+public extension IsoType where Source == AltSource, Target == AltTarget {
+	public var asLens: Lens<Source, Target> {
+		return Lens(get: get, set: set)
+	}
+	
+	public var asPrism: Prism<Source, Target> {
+		return Prism(tryGet: tryGet, reverseGet: reverseGet)
+	}
+	
+	public var asSetter: Setter<Source, Target> {
+		return Setter(modify: modify)
+	}
+	
+	public var asGetter: Getter<Source, Target> {
+		return Getter(get: get)
+	}
+	
+	public var asIso: Iso<Source, Target> {
+		return Iso(get: get, reverseGet: reverseGet)
+	}
+}
+
 // MARK: - LIso
 
 public struct LIso<S, T, A, B> {
