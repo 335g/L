@@ -4,7 +4,7 @@ import Bass
 
 // MARK: - IsoType
 
-public protocol IsoType: PrismType, GetterType {}
+public protocol IsoType: PrismType, LensType {}
 
 public extension IsoType {
 	public func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource {
