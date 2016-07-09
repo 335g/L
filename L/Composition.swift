@@ -26,6 +26,70 @@ public extension Getter {
 	}
 }
 
+// MARK: - LSetter
+
+public extension LSetter {
+	public func compose<C, D>(_ other: LSetter<A, B, C, D>) -> LSetter<S, T, C, D> {
+		let compositionModify: (S, (C) -> D) -> T = { s, f in
+			self.modify(s){ a in
+				other.modify(a, as: f)
+			}
+		}
+		
+		return LSetter<S, T, C, D>(modify: compositionModify)
+	}
+	
+	public func compose<C, D>(_ other: LLens<A, B, C, D>) -> LSetter<S, T, C, D> {
+		return compose(other.asLSetter)
+	}
+	
+	public func compose<C, D>(_ other: LPrism<A, B, C, D>) -> LSetter<S, T, C, D> {
+		return compose(other.asLSetter)
+	}
+	
+	public func compose<C, D>(_ other: LIso<A, B, C, D>) -> LSetter<S, T, C, D> {
+		return compose(other.asLSetter)
+	}
+}
+
+// MARK: - Setter
+
+public extension Setter {
+	public func compose<C>(_ other: Setter<A, C>) -> Setter<S, C> {
+		let compositionModify: (S, (C) -> C) -> S = { s, f in
+			self.modify(s){ a in
+				other.modify(a, as: f)
+			}
+		}
+		
+		return Setter<S, C>(modify: compositionModify)
+	}
+	
+	public func compose<C>(_ other: LLens<A, A, C, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+	
+	public func compose<C>(_ other: Lens<A, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+	
+	public func compose<C>(_ other: LPrism<A, A, C, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+	
+	public func compose<C>(_ other: Prism<A, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+	
+	public func compose<C>(_ other: LIso<A, A, C, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+	
+	public func compose<C>(_ other: Iso<A, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+}
+
 // MARK: - LPrism
 
 public extension LPrism {
@@ -52,7 +116,7 @@ public extension LPrism {
 
 public extension Prism {
 	public func compose<C>(_ other: Prism<A, C>) -> Prism<S, C> {
-		let tryGet: (S) -> Either<S, C> = { s in
+		let compositionTryGet: (S) -> Either<S, C> = { s in
 			self.tryGet(from: s)
 				.flatMap{ a in
 					other.tryGet(from: a).bimap({ a2 in self.set(a2, to: s) }, id)
@@ -60,7 +124,7 @@ public extension Prism {
 		}
 		
 		return Prism<S, C>(
-			tryGet: tryGet,
+			tryGet: compositionTryGet,
 			reverseGet: self.reverseGet • other.reverseGet
 		)
 	}
