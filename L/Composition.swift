@@ -8,6 +8,22 @@ public extension Getter {
 	public func compose<C>(_ other: Getter<A, C>) -> Getter<S, C> {
 		return Getter<S, C>(get: other.get • self.get)
 	}
+	
+	public func compose<B, C, D>(_ other: LLens<A, B, C, D>) -> Getter<S, C> {
+		return compose(other.asGetter)
+	}
+	
+	public func compose<C>(_ other: Lens<A, C>) -> Getter<S, C> {
+		return compose(other.asGetter)
+	}
+	
+	public func compose<B, C, D>(_ other: LIso<A, B, C, D>) -> Getter<S, C> {
+		return compose(other.asGetter)
+	}
+	
+	public func compose<C>(_ other: Iso<A, C>) -> Getter<S, C> {
+		return compose(other.asGetter)
+	}
 }
 
 // MARK: - LPrism
@@ -25,6 +41,10 @@ public extension LPrism {
 			tryGet: tryGet,
 			reverseGet: self.reverseGet • other.reverseGet
 		)
+	}
+	
+	public func compose<C, D>(_ other: LIso<A, B, C, D>) -> LPrism<S, T, C, D> {
+		return compose(other.asLPrism)
 	}
 }
 
@@ -44,6 +64,14 @@ public extension Prism {
 			reverseGet: self.reverseGet • other.reverseGet
 		)
 	}
+	
+	public func compose<C>(_ other: LIso<A, A, C, C>) -> Prism<S, C> {
+		return compose(other.asPrism)
+	}
+	
+	public func compose<C>(_ other: Iso<A, C>) -> Prism<S, C> {
+		return compose(other.asPrism)
+	}
 }
 
 // MARK: - LLens
@@ -57,6 +85,10 @@ public extension LLens {
 			}
 		)
 	}
+	
+	public func compose<C, D>(_ other: LIso<A, B, C, D>) -> LLens<S, T, C, D> {
+		return compose(other.asLLens)
+	}
 }
 
 // MARK: - Lens
@@ -69,6 +101,14 @@ public extension Lens {
 				self.modify(s){ other.set(c, to: $0) }
 			}
 		)
+	}
+	
+	public func compose<C>(_ other: LIso<A, A, C, C>) -> Lens<S, C> {
+		return compose(other.asLens)
+	}
+	
+	public func compose<C>(_ other: Iso<A, C>) -> Lens<S, C> {
+		return compose(other.asLens)
 	}
 }
 
