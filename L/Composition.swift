@@ -110,6 +110,10 @@ public extension LPrism {
 	public func compose<C, D>(_ other: LIso<A, B, C, D>) -> LPrism<S, T, C, D> {
 		return compose(other.asLPrism)
 	}
+	
+	public func compose<C, D>(_ other: LSetter<A, B, C, D>) -> LSetter<S, T, C, D> {
+		return asLSetter.compose(other)
+	}
 }
 
 // MARK: - Prism
@@ -136,6 +140,14 @@ public extension Prism {
 	public func compose<C>(_ other: Iso<A, C>) -> Prism<S, C> {
 		return compose(other.asPrism)
 	}
+	
+	public func compose<C>(_ other: LSetter<A, A, C, C>) -> LSetter<S, S, C, C> {
+		return asLSetter.compose(other)
+	}
+	
+	public func compose<C>(_ other: Setter<A, C>) -> Setter<S, C> {
+		return asSetter.compose(other)
+	}
 }
 
 // MARK: - LLens
@@ -152,6 +164,10 @@ public extension LLens {
 	
 	public func compose<C, D>(_ other: LIso<A, B, C, D>) -> LLens<S, T, C, D> {
 		return compose(other.asLLens)
+	}
+	
+	public func compose<C, D>(_ other: LSetter<A, B, C, D>) -> LSetter<S, T, C, D> {
+		return asLSetter.compose(other)
 	}
 }
 
@@ -174,6 +190,14 @@ public extension Lens {
 	public func compose<C>(_ other: Iso<A, C>) -> Lens<S, C> {
 		return compose(other.asLens)
 	}
+	
+	public func compose<C>(_ other: LSetter<A, A, C, C>) -> LSetter<S, S, C, C> {
+		return asLSetter.compose(other)
+	}
+	
+	public func compose<C>(_ other: Setter<A, C>) -> Setter<S, C> {
+		return asSetter.compose(other)
+	}
 }
 
 // MARK: - LIso
@@ -185,6 +209,18 @@ public extension LIso {
 			reverseGet: self.reverseGet • other.reverseGet
 		)
 	}
+	
+	public func compose<C, D>(_ other: LSetter<A, B, C, D>) -> LSetter<S, T, C, D> {
+		return asLSetter.compose(other)
+	}
+	
+	public func compose<C, D>(_ other: LLens<A, B, C, D>) -> LLens<S, T, C, D> {
+		return asLLens.compose(other)
+	}
+	
+	public func compose<C, D>(_ other: LPrism<A, B, C, D>) -> LPrism<S, T, C, D> {
+		return asLPrism.compose(other)
+	}
 }
 
 // MARK: - Iso
@@ -195,5 +231,29 @@ public extension Iso {
 			get: other.get • self.get,
 			reverseGet: self.reverseGet • other.reverseGet
 		)
+	}
+	
+	public func compose<C>(_ other: LSetter<A, A, C, C>) -> LSetter<S, S, C, C> {
+		return asLSetter.compose(other)
+	}
+	
+	public func compose<C>(_ other: Setter<A, C>) -> Setter<S, C> {
+		return asSetter.compose(other)
+	}
+	
+	public func compose<C>(_ other: LLens<A, A, C, C>) -> LLens<S, S, C, C> {
+		return asLLens.compose(other)
+	}
+	
+	public func compose<C>(_ other: Lens<A, C>) -> Lens<S, C> {
+		return asLens.compose(other)
+	}
+	
+	public func compose<C>(_ other: LPrism<A, A, C, C>) -> LPrism<S, S, C, C> {
+		return asLPrism.compose(other)
+	}
+	
+	public func compose<C>(_ other: Prism<A, C>) -> Prism<S, C> {
+		return asPrism.compose(other)
 	}
 }
