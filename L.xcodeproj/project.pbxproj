@@ -12,12 +12,15 @@
 		8415FFD61D2D2415001F8F96 /* Setter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415FFD51D2D2415001F8F96 /* Setter.swift */; };
 		843061691D23FB4D009A6B1B /* L.h in Headers */ = {isa = PBXBuildFile; fileRef = 843061681D23FB4D009A6B1B /* L.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		843061701D23FB4D009A6B1B /* L.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843061651D23FB4D009A6B1B /* L.framework */; };
-		843061751D23FB4D009A6B1B /* LTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843061741D23FB4D009A6B1B /* LTests.swift */; };
 		843061831D23FDB2009A6B1B /* Optics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843061821D23FDB2009A6B1B /* Optics.swift */; };
 		8430618B1D241356009A6B1B /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8430618A1D241356009A6B1B /* Bass.framework */; };
 		84C2E0821D2E8A7600B0CD30 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0811D2E8A7600B0CD30 /* Iso.swift */; };
 		84C2E0841D2FB8F800B0CD30 /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0831D2FB8F800B0CD30 /* Lens.swift */; };
 		84C2E08A1D2FC89C00B0CD30 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0891D2FC89C00B0CD30 /* Composition.swift */; };
+		84C2E08C1D30D5AD00B0CD30 /* PrismTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E08B1D30D5AD00B0CD30 /* PrismTest.swift */; };
+		84C2E08D1D30E7E900B0CD30 /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8430618A1D241356009A6B1B /* Bass.framework */; };
+		84C2E0911D311B5400B0CD30 /* TestTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0901D311B5400B0CD30 /* TestTypes.swift */; };
+		84C2E0931D31272400B0CD30 /* Himotoki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0921D31272400B0CD30 /* Himotoki.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,13 +41,15 @@
 		843061681D23FB4D009A6B1B /* L.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = L.h; sourceTree = "<group>"; };
 		8430616A1D23FB4D009A6B1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8430616F1D23FB4D009A6B1B /* LTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		843061741D23FB4D009A6B1B /* LTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTests.swift; sourceTree = "<group>"; };
 		843061761D23FB4D009A6B1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		843061821D23FDB2009A6B1B /* Optics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optics.swift; sourceTree = "<group>"; };
 		8430618A1D241356009A6B1B /* Bass.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bass.framework; path = "../../../../Library/Developer/Xcode/DerivedData/L-egozsgukkidexhhiplzvzhhpkaxi/Build/Products/Debug/Bass.framework"; sourceTree = "<group>"; };
 		84C2E0811D2E8A7600B0CD30 /* Iso.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Iso.swift; sourceTree = "<group>"; };
 		84C2E0831D2FB8F800B0CD30 /* Lens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lens.swift; sourceTree = "<group>"; };
 		84C2E0891D2FC89C00B0CD30 /* Composition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
+		84C2E08B1D30D5AD00B0CD30 /* PrismTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismTest.swift; sourceTree = "<group>"; };
+		84C2E0901D311B5400B0CD30 /* TestTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTypes.swift; sourceTree = "<group>"; };
+		84C2E0921D31272400B0CD30 /* Himotoki.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Himotoki.framework; path = "../../../../Library/Developer/Xcode/DerivedData/L-egozsgukkidexhhiplzvzhhpkaxi/Build/Products/Debug/Himotoki.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +65,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84C2E0931D31272400B0CD30 /* Himotoki.framework in Frameworks */,
+				84C2E08D1D30E7E900B0CD30 /* Bass.framework in Frameworks */,
 				843061701D23FB4D009A6B1B /* L.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,8 +112,9 @@
 		843061731D23FB4D009A6B1B /* LTests */ = {
 			isa = PBXGroup;
 			children = (
-				843061741D23FB4D009A6B1B /* LTests.swift */,
 				843061761D23FB4D009A6B1B /* Info.plist */,
+				84C2E08B1D30D5AD00B0CD30 /* PrismTest.swift */,
+				84C2E0901D311B5400B0CD30 /* TestTypes.swift */,
 			);
 			path = LTests;
 			sourceTree = "<group>";
@@ -114,6 +122,7 @@
 		8430617F1D23FC9E009A6B1B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84C2E0921D31272400B0CD30 /* Himotoki.framework */,
 				8430618A1D241356009A6B1B /* Bass.framework */,
 			);
 			name = Frameworks;
@@ -190,6 +199,7 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 6SLQZACQ63;
 						DevelopmentTeamName = "Yoshiki Kudo";
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -248,7 +258,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				843061751D23FB4D009A6B1B /* LTests.swift in Sources */,
+				84C2E08C1D30D5AD00B0CD30 /* PrismTest.swift in Sources */,
+				84C2E0911D311B5400B0CD30 /* TestTypes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,11 +412,13 @@
 		8430617D1D23FB4D009A6B1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = LTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = jp.335g.LTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -413,6 +426,7 @@
 		8430617E1D23FB4D009A6B1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = LTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";

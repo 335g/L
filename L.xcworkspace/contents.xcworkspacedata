@@ -10,4 +10,7 @@
    <FileRef
       location = "group:Carthage/Checkouts/Bass/Bass.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Carthage/Checkouts/Himotoki/Himotoki.xcodeproj">
+   </FileRef>
 </Workspace>
