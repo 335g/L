@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "843061641D23FB4D009A6B1B"
                BuildableName = "L.framework"
-               BlueprintName = "L"
+               BlueprintName = "L-Mac"
                ReferencedContainer = "container:L.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8430616E1D23FB4D009A6B1B"
-               BuildableName = "LTests.xctest"
-               BlueprintName = "LTests"
+               BuildableName = "L-MacTests.xctest"
+               BlueprintName = "L-MacTests"
                ReferencedContainer = "container:L.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -44,7 +44,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "843061641D23FB4D009A6B1B"
             BuildableName = "L.framework"
-            BlueprintName = "L"
+            BlueprintName = "L-Mac"
             ReferencedContainer = "container:L.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,7 +66,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "843061641D23FB4D009A6B1B"
             BuildableName = "L.framework"
-            BlueprintName = "L"
+            BlueprintName = "L-Mac"
             ReferencedContainer = "container:L.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -84,7 +84,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "843061641D23FB4D009A6B1B"
             BuildableName = "L.framework"
-            BlueprintName = "L"
+            BlueprintName = "L-Mac"
             ReferencedContainer = "container:L.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
