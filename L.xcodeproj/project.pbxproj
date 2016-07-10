@@ -17,10 +17,15 @@
 		84C2E0821D2E8A7600B0CD30 /* Iso.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0811D2E8A7600B0CD30 /* Iso.swift */; };
 		84C2E0841D2FB8F800B0CD30 /* Lens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0831D2FB8F800B0CD30 /* Lens.swift */; };
 		84C2E08A1D2FC89C00B0CD30 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0891D2FC89C00B0CD30 /* Composition.swift */; };
-		84C2E08C1D30D5AD00B0CD30 /* PrismTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E08B1D30D5AD00B0CD30 /* PrismTest.swift */; };
 		84C2E08D1D30E7E900B0CD30 /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8430618A1D241356009A6B1B /* Bass.framework */; };
-		84C2E0911D311B5400B0CD30 /* TestTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0901D311B5400B0CD30 /* TestTypes.swift */; };
 		84C2E0931D31272400B0CD30 /* Himotoki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0921D31272400B0CD30 /* Himotoki.framework */; };
+		84C2E09A1D31E13100B0CD30 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0991D31E13100B0CD30 /* SwiftCheck.framework */; };
+		84C2E09C1D31E1B400B0CD30 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E09B1D31E1B400B0CD30 /* Person.swift */; };
+		84C2E09E1D31E43600B0CD30 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E09D1D31E43600B0CD30 /* Company.swift */; };
+		84C2E0A01D31E92900B0CD30 /* SetterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E09F1D31E92900B0CD30 /* SetterSpec.swift */; };
+		84C2E0A21D31EF6700B0CD30 /* LensSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0A11D31EF6700B0CD30 /* LensSpec.swift */; };
+		84C2E0A41D32287400B0CD30 /* PrismSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0A31D32287400B0CD30 /* PrismSpec.swift */; };
+		84C2E0A61D3267EF00B0CD30 /* IsoSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2E0A51D3267EF00B0CD30 /* IsoSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,9 +52,14 @@
 		84C2E0811D2E8A7600B0CD30 /* Iso.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Iso.swift; sourceTree = "<group>"; };
 		84C2E0831D2FB8F800B0CD30 /* Lens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lens.swift; sourceTree = "<group>"; };
 		84C2E0891D2FC89C00B0CD30 /* Composition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
-		84C2E08B1D30D5AD00B0CD30 /* PrismTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismTest.swift; sourceTree = "<group>"; };
-		84C2E0901D311B5400B0CD30 /* TestTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTypes.swift; sourceTree = "<group>"; };
 		84C2E0921D31272400B0CD30 /* Himotoki.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Himotoki.framework; path = "../../../../Library/Developer/Xcode/DerivedData/L-egozsgukkidexhhiplzvzhhpkaxi/Build/Products/Debug/Himotoki.framework"; sourceTree = "<group>"; };
+		84C2E0991D31E13100B0CD30 /* SwiftCheck.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCheck.framework; path = "../../../../Library/Developer/Xcode/DerivedData/L-egozsgukkidexhhiplzvzhhpkaxi/Build/Products/Debug/SwiftCheck.framework"; sourceTree = "<group>"; };
+		84C2E09B1D31E1B400B0CD30 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		84C2E09D1D31E43600B0CD30 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		84C2E09F1D31E92900B0CD30 /* SetterSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetterSpec.swift; sourceTree = "<group>"; };
+		84C2E0A11D31EF6700B0CD30 /* LensSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LensSpec.swift; sourceTree = "<group>"; };
+		84C2E0A31D32287400B0CD30 /* PrismSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrismSpec.swift; sourceTree = "<group>"; };
+		84C2E0A51D3267EF00B0CD30 /* IsoSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IsoSpec.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84C2E09A1D31E13100B0CD30 /* SwiftCheck.framework in Frameworks */,
 				84C2E0931D31272400B0CD30 /* Himotoki.framework in Frameworks */,
 				84C2E08D1D30E7E900B0CD30 /* Bass.framework in Frameworks */,
 				843061701D23FB4D009A6B1B /* L.framework in Frameworks */,
@@ -113,8 +124,12 @@
 			isa = PBXGroup;
 			children = (
 				843061761D23FB4D009A6B1B /* Info.plist */,
-				84C2E08B1D30D5AD00B0CD30 /* PrismTest.swift */,
-				84C2E0901D311B5400B0CD30 /* TestTypes.swift */,
+				84C2E09B1D31E1B400B0CD30 /* Person.swift */,
+				84C2E09D1D31E43600B0CD30 /* Company.swift */,
+				84C2E09F1D31E92900B0CD30 /* SetterSpec.swift */,
+				84C2E0A11D31EF6700B0CD30 /* LensSpec.swift */,
+				84C2E0A31D32287400B0CD30 /* PrismSpec.swift */,
+				84C2E0A51D3267EF00B0CD30 /* IsoSpec.swift */,
 			);
 			path = LTests;
 			sourceTree = "<group>";
@@ -122,6 +137,7 @@
 		8430617F1D23FC9E009A6B1B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84C2E0991D31E13100B0CD30 /* SwiftCheck.framework */,
 				84C2E0921D31272400B0CD30 /* Himotoki.framework */,
 				8430618A1D241356009A6B1B /* Bass.framework */,
 			);
@@ -258,8 +274,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84C2E08C1D30D5AD00B0CD30 /* PrismTest.swift in Sources */,
-				84C2E0911D311B5400B0CD30 /* TestTypes.swift in Sources */,
+				84C2E0A61D3267EF00B0CD30 /* IsoSpec.swift in Sources */,
+				84C2E0A01D31E92900B0CD30 /* SetterSpec.swift in Sources */,
+				84C2E09C1D31E1B400B0CD30 /* Person.swift in Sources */,
+				84C2E0A21D31EF6700B0CD30 /* LensSpec.swift in Sources */,
+				84C2E0A41D32287400B0CD30 /* PrismSpec.swift in Sources */,
+				84C2E09E1D31E43600B0CD30 /* Company.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

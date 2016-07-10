@@ -1,2 +1,2 @@
 github "ikesyo/Himotoki" "swift3"
-
+github "typelift/SwiftCheck" "swift3_0"
