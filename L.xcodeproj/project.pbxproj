@@ -704,6 +704,7 @@
 				84C2E0BF1D3277A700B0CD30 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84C2E0C01D3277A700B0CD30 /* Build configuration list for PBXNativeTarget "L-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -712,6 +713,7 @@
 				84C2E0C21D3277A700B0CD30 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
