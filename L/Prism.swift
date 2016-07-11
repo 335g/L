@@ -30,13 +30,21 @@ public extension PrismType {
 		let tryGet: (Source, T) -> Either<(AltSource, T), (Target, T)> = { (s, x) in
 			self.tryGet(from: s).bimap({ ($0, x) }, { ($0, x) })
 		}
-		let reverseGet: (AltTarget, T) -> (AltSource, T) = { (at, x) in
-			(self.reverseGet(from: at), x)
+		
+		return P (
+			tryGet: tryGet,
+			reverseGet: { (at, x) in (self.reverseGet(from: at), x) }
+		)
+	}
+	
+	public func second<T, P: PrismType where P.Source == (T, Source), P.AltSource == (T, AltSource), P.Target == (T, Target), P.AltTarget == (T, AltTarget)>() -> P {
+		let tryGet: (T, Source) -> Either<(T, AltSource), (T, Target)> = { (x, s) in
+			self.tryGet(from: s).bimap({ (x, $0) }, { (x, $0) })
 		}
 		
 		return P (
 			tryGet: tryGet,
-			reverseGet: reverseGet
+			reverseGet: { (x, at) in (x, self.reverseGet(from: at)) }
 		)
 	}
 }
