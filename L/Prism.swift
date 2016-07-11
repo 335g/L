@@ -7,6 +7,7 @@ import Bass
 public protocol PrismType: OpticsType {
 	func tryGet(from: Source) -> Either<AltSource, Target>
 	func reverseGet(from: AltTarget) -> AltSource
+	init(tryGet: (Source) -> Either<AltSource, Target>, reverseGet: (AltTarget) -> AltSource)
 }
 
 public extension PrismType {

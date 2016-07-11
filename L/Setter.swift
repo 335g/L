@@ -4,6 +4,7 @@
 
 public protocol SetterType: OpticsType {
 	func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource
+	init(modify: (Source, (Target) -> AltTarget) -> AltSource)
 }
 
 public extension SetterType {

@@ -5,6 +5,7 @@
 public protocol LensType: OpticsType {
 	func get(from: Source) -> Target
 	func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource
+	init(get: (Source) -> Target, set: (AltTarget, Source) -> AltSource)
 }
 
 public extension LensType {

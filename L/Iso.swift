@@ -7,6 +7,7 @@ import Bass
 public protocol IsoType: OpticsType {
 	func get(from: Source) -> Target
 	func reverseGet(from: AltTarget) -> AltSource
+	init(get: (Source) -> Target, reverseGet: (AltTarget) -> AltSource)
 }
 
 public extension IsoType {
