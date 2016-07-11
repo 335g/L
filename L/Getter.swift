@@ -10,8 +10,28 @@ public protocol GetterType: SimpleOpticsType {
 }
 
 public extension GetterType {
-	public func split<S, A>(_ other: Getter<S, A>) -> Getter<(Source, S), (Target, A)> {
-		return Getter(get: { (s1, s2) in (self.get(from: s1), other.get(from: s2)) })
+	public func split<S, A, G: GetterType where G.Source == S, G.Target == A>(_ other: G) -> Getter<(Source, S), (Target, A)> {
+		return Getter<(Source, S), (Target, A)>(get:
+			{ (s1, s2) in
+				(self.get(from: s1), other.get(from: s2))
+			}
+		)
+	}
+	
+	public func first<T>() -> Getter<(Source, T), (Target, T)> {
+		return Getter(get: { (s, t) in (self.get(from: s), t) })
+	}
+	
+	public func second<T>() -> Getter<(T, Source), (T, Target)> {
+		return Getter(get: { (t, s) in (t, self.get(from: s)) })
+	}
+	
+	public func left<T>() -> Getter<Either<Source, T>, Either<Target, T>> {
+		return Getter(get: { $0.map(self.get) })
+	}
+	
+	public func right<T>() -> Getter<Either<T, Source>, Either<T, Target>> {
+		return Getter(get: { $0.map(self.get) })
 	}
 }
 
@@ -31,23 +51,5 @@ extension Getter: GetterType {
 	
 	public func get(from: S) -> A {
 		return _get(from)
-	}
-}
-
-public extension Getter {
-	public func first<T>() -> Getter<(S, T), (A, T)> {
-		return Getter<(S, T), (A, T)>(get: { (s, t) in (self.get(from: s), t) })
-	}
-	
-	public func second<T>() -> Getter<(T, S), (T, A)> {
-		return Getter<(T, S), (T, A)>(get: { (t, s) in (t, self.get(from: s)) })
-	}
-	
-	public func left<T>() -> Getter<Either<S, T>, Either<A, T>> {
-		return Getter<Either<S, T>, Either<A, T>>(get: { $0.map(self.get) })
-	}
-	
-	public func right<T>() -> Getter<Either<T, S>, Either<T, A>> {
-		return Getter<Either<T, S>, Either<T, A>>(get: { $0.map(self.get) })
 	}
 }
