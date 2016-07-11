@@ -15,6 +15,28 @@ public extension LensType {
 }
 
 public extension LensType {
+	public func split<S1, T1, A1, B1, L1: LensType, L2: LensType where L1.Source == S1, L1.AltSource == T1, L1.Target == A1, L1.AltTarget == B1, L2.Source == (Source, S1), L2.AltSource == (AltSource, T1), L2.Target == (Target, A1), L2.AltTarget == (AltTarget, B1)>(_ other: L1) -> L2 {
+		return L2(
+			get: { (s0, s1) in (self.get(from: s0), other.get(from: s1)) },
+			set: { (t0, t1) in
+				(self.set(t0.0, to: t1.0), other.set(t0.1, to: t1.1))
+			}
+		)
+	}
+	
+	public func first<T, L: LensType where L.Source == (Source, T), L.AltSource == (AltSource, T), L.Target == (Target, T), L.AltTarget == (AltTarget, T)>() -> L {
+		let set: ((AltTarget, T), (Source, T)) -> (AltSource, T) = { (t0, t1) in
+			(self.set(t0.0, to: t1.0), t0.1)
+		}
+		
+		return L(
+			get: { (s, t) in (self.get(from: s), t) },
+			set: set
+		)
+	}
+}
+
+public extension LensType {
 	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
 		return LSetter(modify: modify)
 	}
