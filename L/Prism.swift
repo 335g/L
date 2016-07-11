@@ -47,6 +47,33 @@ public extension PrismType {
 			reverseGet: { (x, at) in (x, self.reverseGet(from: at)) }
 		)
 	}
+	
+	public func left<T, P: PrismType where P.Source == Either<Source, T>, P.AltSource == Either<AltSource, T>, P.Target == Either<Target, T>, P.AltTarget == Either<AltTarget, T>>() -> P {
+		let tryGet: (Either<Source, T>) -> Either<Either<AltSource, T>, Either<Target, T>> = { e in
+			e.either(
+				ifLeft: { self.tryGet(from: $0).bimap(Either.left, Either.left) },
+				ifRight: Either.right • Either.right
+			)
+		}
+		
+		return P (
+			tryGet: tryGet,
+			reverseGet: { $0.map(self.reverseGet) }
+		)
+	}
+	
+	public func right<T, P: PrismType where P.Source == Either<T, Source>, P.AltSource == Either<T, AltSource>, P.Target == Either<T, Target>, P.AltTarget == Either<T, AltTarget>>() -> P {
+		let tryGet: (Either<T, Source>) -> Either<Either<T, AltSource>, Either<T, Target>> = { e in
+			e.either(
+				ifLeft: Either.left • Either.left,
+				ifRight: { self.tryGet(from: $0).bimap(Either.right, Either.right) })
+		}
+		
+		return P(
+			tryGet: tryGet,
+			reverseGet: { $0.map(self.reverseGet) }
+		)
+	}
 }
 
 public extension PrismType {
