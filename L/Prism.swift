@@ -16,6 +16,10 @@ public extension PrismType {
 			ifRight: reverseGet • f
 		)
 	}
+	
+	public var re: Getter<AltTarget, AltSource> {
+		return Getter(get: reverseGet)
+	}
 }
 
 public extension PrismType {
