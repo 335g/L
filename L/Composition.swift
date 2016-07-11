@@ -159,15 +159,15 @@ public func >>> <S, A, C>(lhs: Setter<S, A>, rhs: Iso<A, C>) -> Setter<S, C> {
 
 public extension LPrism {
 	public func compose<C, D>(_ other: LPrism<A, B, C, D>) -> LPrism<S, T, C, D> {
-		let tryGet: (S) -> Either<T, C> = { s in
+		let compositionTryGet: (S) -> Either<T, C> = { s in
 			self.tryGet(from: s)
 				.flatMap{ a in
-					other.tryGet(from: a).bimap({ b in self.set(b, to: s) }, id)
-			}
+					other.tryGet(from: a).map{ self.set($0, to: s) }
+				}
 		}
 		
 		return LPrism<S, T, C, D>(
-			tryGet: tryGet,
+			tryGet: compositionTryGet,
 			reverseGet: self.reverseGet • other.reverseGet
 		)
 	}
@@ -200,7 +200,7 @@ public extension Prism {
 		let compositionTryGet: (S) -> Either<S, C> = { s in
 			self.tryGet(from: s)
 				.flatMap{ a in
-					other.tryGet(from: a).bimap({ a2 in self.set(a2, to: s) }, id)
+					other.tryGet(from: a).map{ self.set($0, to: s) }
 				}
 		}
 		

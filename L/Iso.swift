@@ -4,11 +4,18 @@ import Bass
 
 // MARK: - IsoType
 
-public protocol IsoType: PrismType, LensType {}
+public protocol IsoType: OpticsType {
+	func get(from: Source) -> Target
+	func reverseGet(from: AltTarget) -> AltSource
+}
 
 public extension IsoType {
 	public func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource {
 		return (reverseGet • f • get)(x)
+	}
+	
+	public func set(_ y: AltTarget, to x: Source) -> AltSource {
+		return modify(x, as: { _ in y })
 	}
 	
 	public func tryGet(from: Source) -> Either<AltSource, Target> {
@@ -28,6 +35,10 @@ public extension IsoType {
 	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
 		return LSetter(modify: modify)
 	}
+	
+	public var asGetter: Getter<Source, Target> {
+		return Getter(get: get)
+	}
 }
 
 public extension IsoType where Source == AltSource, Target == AltTarget {
@@ -41,10 +52,6 @@ public extension IsoType where Source == AltSource, Target == AltTarget {
 	
 	public var asSetter: Setter<Source, Target> {
 		return Setter(modify: modify)
-	}
-	
-	public var asGetter: Getter<Source, Target> {
-		return Getter(get: get)
 	}
 	
 	public var asIso: Iso<Source, Target> {

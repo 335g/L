@@ -4,7 +4,7 @@ import Bass
 
 // MARK: - PrismType
 
-public protocol PrismType: SetterType {
+public protocol PrismType: OpticsType {
 	func tryGet(from: Source) -> Either<AltSource, Target>
 	func reverseGet(from: AltTarget) -> AltSource
 }
@@ -15,6 +15,10 @@ public extension PrismType {
 			ifLeft: id,
 			ifRight: reverseGet • f
 		)
+	}
+	
+	public func set(_ y: AltTarget, to x: Source) -> AltSource {
+		return modify(x, as: { _ in y })
 	}
 	
 	public var re: Getter<AltTarget, AltSource> {
