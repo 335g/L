@@ -34,6 +34,17 @@ public extension LensType {
 			set: set
 		)
 	}
+	
+	public func second<T, L: LensType where L.Source == (T, Source), L.AltSource == (T, AltSource), L.Target == (T, Target), L.AltTarget == (T, AltTarget)>() -> L {
+		let set: ((T, AltTarget), (T, Source)) -> (T, AltSource) = { (t0, t1) in
+			(t0.0, self.set(t0.1, to: t1.1))
+		}
+		
+		return L(
+			get: { (t, s) in (t, self.get(from: s)) },
+			set: set
+		)
+	}
 }
 
 public extension LensType {
