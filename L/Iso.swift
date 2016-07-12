@@ -52,6 +52,22 @@ public extension IsoType {
 			reverseGet: { (t, s) in (t, self.reverseGet(from: s)) }
 		)
 	}
+	
+	public func left<T, I: IsoType where I.Source == Either<Source, T>, I.AltSource == Either<AltSource, T>, I.Target == Either<Target, T>, I.AltTarget == Either<AltTarget, T>>() -> I {
+		
+		return I(
+			get: { $0.map(self.get) },
+			reverseGet: { $0.map(self.reverseGet) }
+		)
+	}
+	
+	public func right<T, I: IsoType where I.Source == Either<T, Source>, I.AltSource == Either<T, AltSource>, I.Target == Either<T, Target>, I.AltTarget == Either<T, AltTarget>>() -> I {
+		
+		return I(
+			get: { $0.map(self.get) },
+			reverseGet: { $0.map(self.reverseGet) }
+		)
+	}
 }
 
 public extension IsoType {
