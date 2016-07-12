@@ -25,6 +25,36 @@ public extension IsoType {
 }
 
 public extension IsoType {
+	public func split<S1, T1, A1, B1, I1: IsoType, I2: IsoType where I1.Source == S1, I1.AltSource == T1, I1.Target == A1, I1.AltTarget == B1, I2.Source == (Source, S1), I2.AltSource == (AltSource, T1), I2.Target == (Target, A1), I2.AltTarget == (AltTarget, B1)>(_ other: I1) -> I2 {
+		
+		let get: (Source, S1) -> (Target, A1) = {
+			(self.get(from: $0), other.get(from: $1))
+		}
+		let reverseGet: (AltTarget, B1) -> (AltSource, T1) = {
+			(self.reverseGet(from: $0), other.reverseGet(from: $1))
+		}
+		
+		return I2(get: get, reverseGet: reverseGet)
+	}
+	
+	public func first<T, I: IsoType where I.Source == (Source, T), I.AltSource == (AltSource, T), I.Target == (Target, T), I.AltTarget == (AltTarget, T)>() -> I {
+		
+		return I(
+			get: { (s, t) in (self.get(from: s), t) },
+			reverseGet: { (s, t) in (self.reverseGet(from: s), t) }
+		)
+	}
+	
+	public func second<T, I: IsoType where I.Source == (T, Source), I.AltSource == (T, AltSource), I.Target == (T, Target), I.AltTarget == (T, AltTarget)>() -> I {
+		
+		return I(
+			get: { (t, s) in (t, self.get(from: s)) },
+			reverseGet: { (t, s) in (t, self.reverseGet(from: s)) }
+		)
+	}
+}
+
+public extension IsoType {
 	public var asLLens: LLens<Source, AltSource, Target, AltTarget> {
 		return LLens(get: get, set: set)
 	}
