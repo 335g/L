@@ -18,6 +18,10 @@ public extension GetterType {
 		)
 	}
 	
+	public func choice<S, G: GetterType where G.Source == S, G.Target == Target>(_ other: G) -> Getter<Either<Source, S>, Target> {
+		return Getter(get: { $0.either(ifLeft: self.get, ifRight: other.get) })
+	}
+	
 	public func first<T>() -> Getter<(Source, T), (Target, T)> {
 		return Getter(get: { (s, t) in (self.get(from: s), t) })
 	}

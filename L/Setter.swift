@@ -1,5 +1,7 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
+import Bass
+
 // MARK: - SetterType
 
 public protocol SetterType: OpticsType {
@@ -10,6 +12,18 @@ public protocol SetterType: OpticsType {
 public extension SetterType {
 	public func set(_ y: AltTarget, to x: Source) -> AltSource {
 		return modify(x, as: { _ in y })
+	}
+	
+	public func choice<S, T, S1: SetterType, S2: SetterType where S1.Source == S, S1.AltSource == T, S1.Target == Target, S1.AltTarget == AltTarget, S2.Source == Either<Source, S>, S2.AltSource == Either<AltSource, T>, S2.Target == Target, S2.AltTarget == AltTarget>(_ other: S1) -> S2 {
+		
+		let modify: (Either<Source, S>, (Target) -> AltTarget) -> Either<AltSource, T> = { e, f in
+			e.either(
+				ifLeft: { Either.left(self.modify($0, as: f)) },
+				ifRight: { Either.right(other.modify($0, as: f)) }
+			)
+		}
+		
+		return S2(modify: modify)
 	}
 }
 
