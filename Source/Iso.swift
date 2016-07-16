@@ -14,14 +14,14 @@ public extension IsoProtocol {
 	}
 }
 
-// MARK: - IsoType
+// MARK: - IsoGenerator
 
-public protocol IsoType: IsoProtocol {
+public protocol IsoGenerator: IsoProtocol {
 	init(get: (Source) -> Target, reverseGet: (AltTarget) -> AltSource)
 }
 
-public extension IsoType {
-	public func split<S1, T1, A1, B1, I1: IsoType, I2: IsoType where I1.Source == S1, I1.AltSource == T1, I1.Target == A1, I1.AltTarget == B1, I2.Source == (Source, S1), I2.AltSource == (AltSource, T1), I2.Target == (Target, A1), I2.AltTarget == (AltTarget, B1)>(_ other: I1) -> I2 {
+public extension IsoGenerator {
+	public func split<S1, T1, A1, B1, I1: IsoGenerator, I2: IsoGenerator where I1.Source == S1, I1.AltSource == T1, I1.Target == A1, I1.AltTarget == B1, I2.Source == (Source, S1), I2.AltSource == (AltSource, T1), I2.Target == (Target, A1), I2.AltTarget == (AltTarget, B1)>(_ other: I1) -> I2 {
 		
 		let get: (Source, S1) -> (Target, A1) = {
 			(self.get(from: $0), other.get(from: $1))
@@ -33,7 +33,7 @@ public extension IsoType {
 		return I2(get: get, reverseGet: reverseGet)
 	}
 	
-	public func first<T, I: IsoType where I.Source == (Source, T), I.AltSource == (AltSource, T), I.Target == (Target, T), I.AltTarget == (AltTarget, T)>() -> I {
+	public func first<T, I: IsoGenerator where I.Source == (Source, T), I.AltSource == (AltSource, T), I.Target == (Target, T), I.AltTarget == (AltTarget, T)>() -> I {
 		
 		return I(
 			get: { (s, t) in (self.get(from: s), t) },
@@ -41,7 +41,7 @@ public extension IsoType {
 		)
 	}
 	
-	public func second<T, I: IsoType where I.Source == (T, Source), I.AltSource == (T, AltSource), I.Target == (T, Target), I.AltTarget == (T, AltTarget)>() -> I {
+	public func second<T, I: IsoGenerator where I.Source == (T, Source), I.AltSource == (T, AltSource), I.Target == (T, Target), I.AltTarget == (T, AltTarget)>() -> I {
 		
 		return I(
 			get: { (t, s) in (t, self.get(from: s)) },
@@ -49,7 +49,7 @@ public extension IsoType {
 		)
 	}
 	
-	public func left<T, I: IsoType where I.Source == Either<Source, T>, I.AltSource == Either<AltSource, T>, I.Target == Either<Target, T>, I.AltTarget == Either<AltTarget, T>>() -> I {
+	public func left<T, I: IsoGenerator where I.Source == Either<Source, T>, I.AltSource == Either<AltSource, T>, I.Target == Either<Target, T>, I.AltTarget == Either<AltTarget, T>>() -> I {
 		
 		return I(
 			get: { $0.map(self.get) },
@@ -57,7 +57,7 @@ public extension IsoType {
 		)
 	}
 	
-	public func right<T, I: IsoType where I.Source == Either<T, Source>, I.AltSource == Either<T, AltSource>, I.Target == Either<T, Target>, I.AltTarget == Either<T, AltTarget>>() -> I {
+	public func right<T, I: IsoGenerator where I.Source == Either<T, Source>, I.AltSource == Either<T, AltSource>, I.Target == Either<T, Target>, I.AltTarget == Either<T, AltTarget>>() -> I {
 		
 		return I(
 			get: { $0.map(self.get) },
@@ -66,7 +66,7 @@ public extension IsoType {
 	}
 }
 
-public extension IsoType {
+public extension IsoGenerator {
 	public var asLLens: LLens<Source, AltSource, Target, AltTarget> {
 		return LLens(get: get, set: set)
 	}
@@ -84,7 +84,7 @@ public extension IsoType {
 	}
 }
 
-public extension IsoType where Source == AltSource, Target == AltTarget {
+public extension IsoGenerator where Source == AltSource, Target == AltTarget {
 	public var asLens: Lens<Source, Target> {
 		return Lens(get: get, set: set)
 	}
@@ -114,7 +114,7 @@ public struct LIso<S, T, A, B> {
 	}
 }
 
-extension LIso: IsoType {
+extension LIso: IsoGenerator {
 	public typealias Source = S
 	public typealias AltSource = T
 	public typealias Target = A
@@ -147,7 +147,7 @@ public struct Iso<S, A> {
 	}
 }
 
-extension Iso: IsoType {
+extension Iso: IsoGenerator {
 	public typealias Source = S
 	public typealias AltSource = S
 	public typealias Target = A

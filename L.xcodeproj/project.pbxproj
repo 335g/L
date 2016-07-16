@@ -157,13 +157,13 @@
 			children = (
 				84DAA38D1D38FA46009C2CCF /* Info.plist */,
 				84DAA38F1D38FA46009C2CCF /* L.h */,
-				84DAA38B1D38FA46009C2CCF /* Composition.swift */,
-				84DAA38C1D38FA46009C2CCF /* Getter.swift */,
-				84DAA38E1D38FA46009C2CCF /* Iso.swift */,
-				84DAA3901D38FA46009C2CCF /* Lens.swift */,
 				84DAA3911D38FA46009C2CCF /* Optics.swift */,
-				84DAA3921D38FA46009C2CCF /* Prism.swift */,
+				84DAA38C1D38FA46009C2CCF /* Getter.swift */,
 				84DAA3931D38FA46009C2CCF /* Setter.swift */,
+				84DAA3921D38FA46009C2CCF /* Prism.swift */,
+				84DAA3901D38FA46009C2CCF /* Lens.swift */,
+				84DAA38E1D38FA46009C2CCF /* Iso.swift */,
+				84DAA38B1D38FA46009C2CCF /* Composition.swift */,
 			);
 			name = Source;
 			path = L;

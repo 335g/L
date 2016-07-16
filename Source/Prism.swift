@@ -22,14 +22,14 @@ public extension PrismProtocol {
 	}
 }
 
-// MARK: - PrismType
+// MARK: - PrismGenerator
 
-public protocol PrismType: PrismProtocol {
+public protocol PrismGenerator: PrismProtocol {
 	init(tryGet: (Source) -> Either<AltSource, Target>, reverseGet: (AltTarget) -> AltSource)
 }
 
-public extension PrismType {
-	public func first<T, P: PrismType where P.Source == (Source, T), P.AltSource == (AltSource, T), P.Target == (Target, T), P.AltTarget == (AltTarget, T)>() -> P {
+public extension PrismGenerator {
+	public func first<T, P: PrismGenerator where P.Source == (Source, T), P.AltSource == (AltSource, T), P.Target == (Target, T), P.AltTarget == (AltTarget, T)>() -> P {
 		let tryGet: (Source, T) -> Either<(AltSource, T), (Target, T)> = { (s, x) in
 			self.tryGet(from: s).bimap({ ($0, x) }, { ($0, x) })
 		}
@@ -40,7 +40,7 @@ public extension PrismType {
 		)
 	}
 	
-	public func second<T, P: PrismType where P.Source == (T, Source), P.AltSource == (T, AltSource), P.Target == (T, Target), P.AltTarget == (T, AltTarget)>() -> P {
+	public func second<T, P: PrismGenerator where P.Source == (T, Source), P.AltSource == (T, AltSource), P.Target == (T, Target), P.AltTarget == (T, AltTarget)>() -> P {
 		let tryGet: (T, Source) -> Either<(T, AltSource), (T, Target)> = { (x, s) in
 			self.tryGet(from: s).bimap({ (x, $0) }, { (x, $0) })
 		}
@@ -51,7 +51,7 @@ public extension PrismType {
 		)
 	}
 	
-	public func left<T, P: PrismType where P.Source == Either<Source, T>, P.AltSource == Either<AltSource, T>, P.Target == Either<Target, T>, P.AltTarget == Either<AltTarget, T>>() -> P {
+	public func left<T, P: PrismGenerator where P.Source == Either<Source, T>, P.AltSource == Either<AltSource, T>, P.Target == Either<Target, T>, P.AltTarget == Either<AltTarget, T>>() -> P {
 		let tryGet: (Either<Source, T>) -> Either<Either<AltSource, T>, Either<Target, T>> = { e in
 			e.either(
 				ifLeft: { self.tryGet(from: $0).bimap(Either.left, Either.left) },
@@ -65,7 +65,7 @@ public extension PrismType {
 		)
 	}
 	
-	public func right<T, P: PrismType where P.Source == Either<T, Source>, P.AltSource == Either<T, AltSource>, P.Target == Either<T, Target>, P.AltTarget == Either<T, AltTarget>>() -> P {
+	public func right<T, P: PrismGenerator where P.Source == Either<T, Source>, P.AltSource == Either<T, AltSource>, P.Target == Either<T, Target>, P.AltTarget == Either<T, AltTarget>>() -> P {
 		let tryGet: (Either<T, Source>) -> Either<Either<T, AltSource>, Either<T, Target>> = { e in
 			e.either(
 				ifLeft: Either.left • Either.left,
@@ -79,13 +79,13 @@ public extension PrismType {
 	}
 }
 
-public extension PrismType {
+public extension PrismGenerator {
 	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
 		return LSetter(modify: modify)
 	}
 }
 
-public extension PrismType where Source == AltSource, Target == AltTarget {
+public extension PrismGenerator where Source == AltSource, Target == AltTarget {
 	public var asSetter: Setter<Source, Target> {
 		return Setter(modify: modify)
 	}
@@ -95,7 +95,7 @@ public extension PrismType where Source == AltSource, Target == AltTarget {
 	}
 }
 
-public extension PrismType where Source == AltSource {
+public extension PrismGenerator where Source == AltSource {
 	public static func prism(tryGet: (Source) -> Target?, reverseGet: (AltTarget) -> Source) -> LPrism<Source, Source, Target, AltTarget> {
 		let g: (Source) -> Either<Source, Target> = { source in
 			if let it = tryGet(source) {
@@ -131,7 +131,7 @@ public struct LPrism<S, T, A, B> {
 	}
 }
 
-extension LPrism: PrismType {
+extension LPrism: PrismGenerator {
 	public typealias Source = S
 	public typealias AltSource = T
 	public typealias Target = A
@@ -158,7 +158,7 @@ public struct Prism<S, A> {
 	}
 }
 
-extension Prism: PrismType {
+extension Prism: PrismGenerator {
 	public typealias Source = S
 	public typealias AltSource = S
 	public typealias Target = A

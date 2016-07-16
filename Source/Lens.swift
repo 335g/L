@@ -4,14 +4,14 @@
 
 public protocol LensProtocol: GetterProtocol, SetterProtocol {}
 
-// MARK: - LensType
+// MARK: - LensGenerator
 
-public protocol LensType: LensProtocol {
+public protocol LensGenerator: LensProtocol {
 	init(get: (Source) -> Target, set: (AltTarget, Source) -> AltSource)
 }
 
-public extension LensType {
-	public func split<S1, T1, A1, B1, L1: LensType, L2: LensType where L1.Source == S1, L1.AltSource == T1, L1.Target == A1, L1.AltTarget == B1, L2.Source == (Source, S1), L2.AltSource == (AltSource, T1), L2.Target == (Target, A1), L2.AltTarget == (AltTarget, B1)>(_ other: L1) -> L2 {
+public extension LensGenerator {
+	public func split<S1, T1, A1, B1, L1: LensGenerator, L2: LensGenerator where L1.Source == S1, L1.AltSource == T1, L1.Target == A1, L1.AltTarget == B1, L2.Source == (Source, S1), L2.AltSource == (AltSource, T1), L2.Target == (Target, A1), L2.AltTarget == (AltTarget, B1)>(_ other: L1) -> L2 {
 		
 		let get: (Source, S1) -> (Target, A1) = {
 			(self.get(from: $0), other.get(from: $1))
@@ -22,7 +22,7 @@ public extension LensType {
 		return L2(get: get,set: set)
 	}
 	
-	public func first<T, L: LensType where L.Source == (Source, T), L.AltSource == (AltSource, T), L.Target == (Target, T), L.AltTarget == (AltTarget, T)>() -> L {
+	public func first<T, L: LensGenerator where L.Source == (Source, T), L.AltSource == (AltSource, T), L.Target == (Target, T), L.AltTarget == (AltTarget, T)>() -> L {
 		let set: ((AltTarget, T), (Source, T)) -> (AltSource, T) = { (t0, t1) in
 			(self.set(t0.0, to: t1.0), t0.1)
 		}
@@ -33,7 +33,7 @@ public extension LensType {
 		)
 	}
 	
-	public func second<T, L: LensType where L.Source == (T, Source), L.AltSource == (T, AltSource), L.Target == (T, Target), L.AltTarget == (T, AltTarget)>() -> L {
+	public func second<T, L: LensGenerator where L.Source == (T, Source), L.AltSource == (T, AltSource), L.Target == (T, Target), L.AltTarget == (T, AltTarget)>() -> L {
 		let set: ((T, AltTarget), (T, Source)) -> (T, AltSource) = { (t0, t1) in
 			(t0.0, self.set(t0.1, to: t1.1))
 		}
@@ -45,7 +45,7 @@ public extension LensType {
 	}
 }
 
-public extension LensType {
+public extension LensGenerator {
 	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
 		return LSetter(modify: modify)
 	}
@@ -55,7 +55,7 @@ public extension LensType {
 	}
 }
 
-public extension LensType where Source == AltSource, Target == AltTarget {
+public extension LensGenerator where Source == AltSource, Target == AltTarget {
 	public var asSetter: Setter<Source, Target> {
 		return Setter(modify: modify)
 	}
@@ -77,7 +77,7 @@ public struct LLens<S, T, A, B> {
 	}
 }
 
-extension LLens: LensType {
+extension LLens: LensGenerator {
 	public typealias Source = S
 	public typealias AltSource = T
 	public typealias Target = A
@@ -108,7 +108,7 @@ public struct Lens<S, A> {
 	}
 }
 
-extension Lens: LensType {
+extension Lens: LensGenerator {
 	public typealias Source = S
 	public typealias AltSource = S
 	public typealias Target = A

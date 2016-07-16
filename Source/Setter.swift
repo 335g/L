@@ -14,14 +14,14 @@ public extension SetterProtocol {
 	}
 }
 
-// MARK: - SetterType
+// MARK: - SetterGenerator
 
-public protocol SetterType: SetterProtocol {
+public protocol SetterGenerator: SetterProtocol {
 	init(modify: (Source, (Target) -> AltTarget) -> AltSource)
 }
 
-public extension SetterType {
-	public func choice<S, T, S1: SetterType, S2: SetterType where S1.Source == S, S1.AltSource == T, S1.Target == Target, S1.AltTarget == AltTarget, S2.Source == Either<Source, S>, S2.AltSource == Either<AltSource, T>, S2.Target == Target, S2.AltTarget == AltTarget>(_ other: S1) -> S2 {
+public extension SetterGenerator {
+	public func choice<S, T, S1: SetterGenerator, S2: SetterGenerator where S1.Source == S, S1.AltSource == T, S1.Target == Target, S1.AltTarget == AltTarget, S2.Source == Either<Source, S>, S2.AltSource == Either<AltSource, T>, S2.Target == Target, S2.AltTarget == AltTarget>(_ other: S1) -> S2 {
 		
 		let modify: (Either<Source, S>, (Target) -> AltTarget) -> Either<AltSource, T> = { e, f in
 			e.either(
@@ -44,7 +44,7 @@ public struct LSetter<S, T, A, B> {
 	}
 }
 
-extension LSetter: SetterType {
+extension LSetter: SetterGenerator {
 	public typealias Source = S
 	public typealias AltSource = T
 	public typealias Target = A
@@ -65,7 +65,7 @@ public struct Setter<S, A> {
 	}
 }
 
-extension Setter: SetterType {
+extension Setter: SetterGenerator {
 	public typealias Source = S
 	public typealias AltSource = S
 	public typealias Target = A
