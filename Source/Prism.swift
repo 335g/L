@@ -2,15 +2,14 @@
 
 import Bass
 
-// MARK: - PrismType
+// MARK: - PrismProtocol
 
-public protocol PrismType: OpticsType {
+public protocol PrismProtocol: SetterProtocol {
 	func tryGet(from: Source) -> Either<AltSource, Target>
 	func reverseGet(from: AltTarget) -> AltSource
-	init(tryGet: (Source) -> Either<AltSource, Target>, reverseGet: (AltTarget) -> AltSource)
 }
 
-public extension PrismType {
+public extension PrismProtocol {
 	public func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource {
 		return tryGet(from: x).either(
 			ifLeft: id,
@@ -18,13 +17,15 @@ public extension PrismType {
 		)
 	}
 	
-	public func set(_ y: AltTarget, to x: Source) -> AltSource {
-		return modify(x, as: { _ in y })
-	}
-	
 	public var re: Getter<AltTarget, AltSource> {
 		return Getter(get: reverseGet)
 	}
+}
+
+// MARK: - PrismType
+
+public protocol PrismType: PrismProtocol {
+	init(tryGet: (Source) -> Either<AltSource, Target>, reverseGet: (AltTarget) -> AltSource)
 }
 
 public extension PrismType {

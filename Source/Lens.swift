@@ -1,17 +1,13 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
+// MARK: - LensProtocol
+
+public protocol LensProtocol: GetterProtocol, SetterProtocol {}
+
 // MARK: - LensType
 
-public protocol LensType: OpticsType {
-	func get(from: Source) -> Target
-	func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource
+public protocol LensType: LensProtocol {
 	init(get: (Source) -> Target, set: (AltTarget, Source) -> AltSource)
-}
-
-public extension LensType {
-	public func set(_ y: AltTarget, to x: Source) -> AltSource {
-		return modify(x, as: { _ in y })
-	}
 }
 
 public extension LensType {

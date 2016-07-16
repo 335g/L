@@ -2,26 +2,22 @@
 
 import Bass
 
-// MARK: - IsoType
+// MARK: - IsoProtocol
 
-public protocol IsoType: OpticsType {
-	func get(from: Source) -> Target
+public protocol IsoProtocol: PrismProtocol, LensProtocol {
 	func reverseGet(from: AltTarget) -> AltSource
-	init(get: (Source) -> Target, reverseGet: (AltTarget) -> AltSource)
 }
 
-public extension IsoType {
-	public func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource {
-		return (reverseGet • f • get)(x)
-	}
-	
-	public func set(_ y: AltTarget, to x: Source) -> AltSource {
-		return modify(x, as: { _ in y })
-	}
-	
+public extension IsoProtocol {
 	public func tryGet(from: Source) -> Either<AltSource, Target> {
 		return .right(get(from: from))
 	}
+}
+
+// MARK: - IsoType
+
+public protocol IsoType: IsoProtocol {
+	init(get: (Source) -> Target, reverseGet: (AltTarget) -> AltSource)
 }
 
 public extension IsoType {
