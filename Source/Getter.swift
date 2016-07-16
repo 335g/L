@@ -6,7 +6,6 @@ import Bass
 
 public protocol GetterType: SimpleOpticsType {
 	func get(from: Source) -> Target
-	init(get: (Source) -> Target)
 }
 
 public extension GetterType {
