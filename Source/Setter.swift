@@ -21,8 +21,16 @@ public protocol SetterGenerator: SetterProtocol {
 }
 
 public extension SetterGenerator {
-	public func choice<S, T, S1: SetterGenerator, S2: SetterGenerator where S1.Source == S, S1.AltSource == T, S1.Target == Target, S1.AltTarget == AltTarget, S2.Source == Either<Source, S>, S2.AltSource == Either<AltSource, T>, S2.Target == Target, S2.AltTarget == AltTarget>(_ other: S1) -> S2 {
-		
+	public func choice <S, T, S1: SetterGenerator, S2: SetterGenerator where
+		S1.Source		== S,
+		S1.AltSource	== T,
+		S1.Target		== Target,
+		S1.AltTarget	== AltTarget,
+		S2.Source		== Either<Source, S>,
+		S2.AltSource	== Either<AltSource, T>,
+		S2.Target		== Target,
+		S2.AltTarget	== AltTarget> (_ other: S1) -> S2
+	{
 		let modify: (Either<Source, S>, (Target) -> AltTarget) -> Either<AltSource, T> = { e, f in
 			e.either(
 				ifLeft: { Either.left(self.modify($0, as: f)) },

@@ -11,8 +11,16 @@ public protocol LensGenerator: LensProtocol {
 }
 
 public extension LensGenerator {
-	public func split<S1, T1, A1, B1, L1: LensGenerator, L2: LensGenerator where L1.Source == S1, L1.AltSource == T1, L1.Target == A1, L1.AltTarget == B1, L2.Source == (Source, S1), L2.AltSource == (AltSource, T1), L2.Target == (Target, A1), L2.AltTarget == (AltTarget, B1)>(_ other: L1) -> L2 {
-		
+	public func split <S1, T1, A1, B1, L1: LensGenerator, L2: LensGenerator where
+		L1.Source		== S1,
+		L1.AltSource	== T1,
+		L1.Target		== A1,
+		L1.AltTarget	== B1,
+		L2.Source		== (Source, S1),
+		L2.AltSource	== (AltSource, T1),
+		L2.Target		== (Target, A1),
+		L2.AltTarget	== (AltTarget, B1)> (_ other: L1) -> L2
+	{
 		let get: (Source, S1) -> (Target, A1) = {
 			(self.get(from: $0), other.get(from: $1))
 		}
@@ -22,7 +30,12 @@ public extension LensGenerator {
 		return L2(get: get,set: set)
 	}
 	
-	public func first<T, L: LensGenerator where L.Source == (Source, T), L.AltSource == (AltSource, T), L.Target == (Target, T), L.AltTarget == (AltTarget, T)>() -> L {
+	public func first <T, L: LensGenerator where
+		L.Source	== (Source, T),
+		L.AltSource == (AltSource, T),
+		L.Target	== (Target, T),
+		L.AltTarget == (AltTarget, T)> () -> L
+	{
 		let set: ((AltTarget, T), (Source, T)) -> (AltSource, T) = { (t0, t1) in
 			(self.set(t0.0, to: t1.0), t0.1)
 		}
@@ -33,7 +46,12 @@ public extension LensGenerator {
 		)
 	}
 	
-	public func second<T, L: LensGenerator where L.Source == (T, Source), L.AltSource == (T, AltSource), L.Target == (T, Target), L.AltTarget == (T, AltTarget)>() -> L {
+	public func second <T, L: LensGenerator where
+		L.Source	== (T, Source),
+		L.AltSource == (T, AltSource),
+		L.Target	== (T, Target),
+		L.AltTarget == (T, AltTarget)> () -> L
+	{
 		let set: ((T, AltTarget), (T, Source)) -> (T, AltSource) = { (t0, t1) in
 			(t0.0, self.set(t0.1, to: t1.1))
 		}

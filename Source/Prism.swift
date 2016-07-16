@@ -29,7 +29,12 @@ public protocol PrismGenerator: PrismProtocol {
 }
 
 public extension PrismGenerator {
-	public func first<T, P: PrismGenerator where P.Source == (Source, T), P.AltSource == (AltSource, T), P.Target == (Target, T), P.AltTarget == (AltTarget, T)>() -> P {
+	public func first <T, P: PrismGenerator where
+		P.Source	== (Source, T),
+		P.AltSource == (AltSource, T),
+		P.Target	== (Target, T),
+		P.AltTarget == (AltTarget, T)> () -> P
+	{
 		let tryGet: (Source, T) -> Either<(AltSource, T), (Target, T)> = { (s, x) in
 			self.tryGet(from: s).bimap({ ($0, x) }, { ($0, x) })
 		}
@@ -40,7 +45,12 @@ public extension PrismGenerator {
 		)
 	}
 	
-	public func second<T, P: PrismGenerator where P.Source == (T, Source), P.AltSource == (T, AltSource), P.Target == (T, Target), P.AltTarget == (T, AltTarget)>() -> P {
+	public func second <T, P: PrismGenerator where
+		P.Source	== (T, Source),
+		P.AltSource == (T, AltSource),
+		P.Target	== (T, Target),
+		P.AltTarget == (T, AltTarget)> () -> P
+	{
 		let tryGet: (T, Source) -> Either<(T, AltSource), (T, Target)> = { (x, s) in
 			self.tryGet(from: s).bimap({ (x, $0) }, { (x, $0) })
 		}
@@ -51,7 +61,12 @@ public extension PrismGenerator {
 		)
 	}
 	
-	public func left<T, P: PrismGenerator where P.Source == Either<Source, T>, P.AltSource == Either<AltSource, T>, P.Target == Either<Target, T>, P.AltTarget == Either<AltTarget, T>>() -> P {
+	public func left <T, P: PrismGenerator where
+		P.Source	== Either<Source, T>,
+		P.AltSource == Either<AltSource, T>,
+		P.Target	== Either<Target, T>,
+		P.AltTarget == Either<AltTarget, T>> () -> P
+	{
 		let tryGet: (Either<Source, T>) -> Either<Either<AltSource, T>, Either<Target, T>> = { e in
 			e.either(
 				ifLeft: { self.tryGet(from: $0).bimap(Either.left, Either.left) },
@@ -65,7 +80,12 @@ public extension PrismGenerator {
 		)
 	}
 	
-	public func right<T, P: PrismGenerator where P.Source == Either<T, Source>, P.AltSource == Either<T, AltSource>, P.Target == Either<T, Target>, P.AltTarget == Either<T, AltTarget>>() -> P {
+	public func right <T, P: PrismGenerator where
+		P.Source	== Either<T, Source>,
+		P.AltSource == Either<T, AltSource>,
+		P.Target	== Either<T, Target>,
+		P.AltTarget == Either<T, AltTarget>> () -> P
+	{
 		let tryGet: (Either<T, Source>) -> Either<Either<T, AltSource>, Either<T, Target>> = { e in
 			e.either(
 				ifLeft: Either.left • Either.left,
