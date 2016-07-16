@@ -10,10 +10,8 @@
 		843061701D23FB4D009A6B1B /* L.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843061651D23FB4D009A6B1B /* L.framework */; };
 		8430618B1D241356009A6B1B /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8430618A1D241356009A6B1B /* Bass.framework */; };
 		8482B3F11D38FC24000E0ED7 /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0CB1D3278A000B0CD30 /* Bass.framework */; };
-		8482B3F41D38FC25000E0ED7 /* Himotoki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8482B3F21D38FC25000E0ED7 /* Himotoki.framework */; };
 		8482B3F51D38FC25000E0ED7 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8482B3F31D38FC25000E0ED7 /* SwiftCheck.framework */; };
 		84C2E08D1D30E7E900B0CD30 /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8430618A1D241356009A6B1B /* Bass.framework */; };
-		84C2E0931D31272400B0CD30 /* Himotoki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0921D31272400B0CD30 /* Himotoki.framework */; };
 		84C2E09A1D31E13100B0CD30 /* SwiftCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0991D31E13100B0CD30 /* SwiftCheck.framework */; };
 		84C2E0B51D3277A700B0CD30 /* L.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0AC1D3277A700B0CD30 /* L.framework */; };
 		84C2E0CC1D3278A000B0CD30 /* Bass.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C2E0CB1D3278A000B0CD30 /* Bass.framework */; };
@@ -107,7 +105,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84C2E09A1D31E13100B0CD30 /* SwiftCheck.framework in Frameworks */,
-				84C2E0931D31272400B0CD30 /* Himotoki.framework in Frameworks */,
 				84C2E08D1D30E7E900B0CD30 /* Bass.framework in Frameworks */,
 				843061701D23FB4D009A6B1B /* L.framework in Frameworks */,
 			);
@@ -125,7 +122,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8482B3F41D38FC25000E0ED7 /* Himotoki.framework in Frameworks */,
 				8482B3F51D38FC25000E0ED7 /* SwiftCheck.framework in Frameworks */,
 				8482B3F11D38FC24000E0ED7 /* Bass.framework in Frameworks */,
 				84C2E0B51D3277A700B0CD30 /* L.framework in Frameworks */,

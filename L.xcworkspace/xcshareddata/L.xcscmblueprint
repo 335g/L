@@ -7,6 +7,7 @@
     "892A392662EFD968ECAC00BEDD3BE4AF0F19F413" : 0,
     "53964F28C4CCA0826677C9F951DD3F64C20326C4" : 0,
     "45481943CEB6C432ADDA6C3AEA2CDA67F8F4C971" : 0,
+    "703FC25FD86D6F44849F561FD24EEFE85B252B81" : 0,
     "E084C86B03F81D63323C9E7510697EA528A758C7" : 0,
     "724522004541BF6A9932EA9534E8B277C2E6B5E6" : 0
   },
@@ -15,6 +16,7 @@
     "892A392662EFD968ECAC00BEDD3BE4AF0F19F413" : "L\/Carthage\/Checkouts\/Himotoki\/",
     "53964F28C4CCA0826677C9F951DD3F64C20326C4" : "L\/Carthage\/Checkouts\/SwiftCheck\/",
     "45481943CEB6C432ADDA6C3AEA2CDA67F8F4C971" : "L\/Carthage\/Checkouts\/Bass\/",
+    "703FC25FD86D6F44849F561FD24EEFE85B252B81" : "L\/Carthage\/Checkouts\/Typewriter\/",
     "E084C86B03F81D63323C9E7510697EA528A758C7" : "L\/Carthage\/Checkouts\/Himotoki\/Carthage\/Checkouts\/xcconfigs\/",
     "724522004541BF6A9932EA9534E8B277C2E6B5E6" : "L\/"
   },
@@ -31,6 +33,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/typelift\/SwiftCheck.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "53964F28C4CCA0826677C9F951DD3F64C20326C4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/335g\/Typewriter.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "703FC25FD86D6F44849F561FD24EEFE85B252B81"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:335g\/L.git",
