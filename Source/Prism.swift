@@ -83,6 +83,10 @@ public extension PrismGenerator {
 	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
 		return LSetter(modify: modify)
 	}
+	
+	public var asLPrism: LPrism<Source, AltSource, Target, AltTarget> {
+		return LPrism(tryGet: tryGet, reverseGet: reverseGet)
+	}
 }
 
 public extension PrismGenerator where Source == AltSource, Target == AltTarget {

@@ -102,6 +102,10 @@ public extension Setter {
 		return Setter<S, C>(modify: compositionModify)
 	}
 	
+	public func compose<C>(_ other: LSetter<A, A, C, C>) -> Setter<S, C> {
+		return compose(other.asSetter)
+	}
+	
 	public func compose<C>(_ other: LLens<A, A, C, C>) -> Setter<S, C> {
 		return compose(other.asSetter)
 	}
@@ -128,6 +132,10 @@ public extension Setter {
 }
 
 public func >>> <S, A, C>(lhs: Setter<S, A>, rhs: Setter<A, C>) -> Setter<S, C> {
+	return lhs.compose(rhs)
+}
+
+public func >>> <S, A, C>(lhs: Setter<S, A>, rhs: LSetter<A, A, C, C>) -> Setter<S, C> {
 	return lhs.compose(rhs)
 }
 
@@ -210,6 +218,10 @@ public extension Prism {
 		)
 	}
 	
+	public func compose<C>(_ other: LPrism<A, A, C, C>) -> Prism<S, C> {
+		return compose(other.asPrism)
+	}
+	
 	public func compose<C>(_ other: LIso<A, A, C, C>) -> Prism<S, C> {
 		return compose(other.asPrism)
 	}
@@ -228,6 +240,10 @@ public extension Prism {
 }
 
 public func >>> <S, A, C>(lhs: Prism<S, A>, rhs: Prism<A, C>) -> Prism<S, C> {
+	return lhs.compose(rhs)
+}
+
+public func >>> <S, A, C>(lhs: Prism<S, A>, rhs: LPrism<A, A, C, C>) -> Prism<S, C> {
 	return lhs.compose(rhs)
 }
 
@@ -292,6 +308,10 @@ public extension Lens {
 		)
 	}
 	
+	public func compose<C>(_ other: LLens<A, A, C, C>) -> Lens<S, C> {
+		return compose(other.asLens)
+	}
+	
 	public func compose<C>(_ other: LIso<A, A, C, C>) -> Lens<S, C> {
 		return compose(other.asLens)
 	}
@@ -310,6 +330,10 @@ public extension Lens {
 }
 
 public func >>> <S, A, C>(lhs: Lens<S, A>, rhs: Lens<A, C>) -> Lens<S, C> {
+	return lhs.compose(rhs)
+}
+
+public func >>> <S, A, C>(lhs: Lens<S, A>, rhs: LLens<A, A, C, C>) -> Lens<S, C> {
 	return lhs.compose(rhs)
 }
 
@@ -378,6 +402,10 @@ public extension Iso {
 		)
 	}
 	
+	public func compose<C>(_ other: LIso<A, A, C, C>) -> Iso<S, C> {
+		return compose(other.asIso)
+	}
+	
 	public func compose<C>(_ other: LSetter<A, A, C, C>) -> LSetter<S, S, C, C> {
 		return asLSetter.compose(other)
 	}
@@ -404,6 +432,10 @@ public extension Iso {
 }
 
 public func >>> <S, A, C>(lhs: Iso<S, A>, rhs: Iso<A, C>) -> Iso<S, C> {
+	return lhs.compose(rhs)
+}
+
+public func >>> <S, A, C>(lhs: Iso<S, A>, rhs: LIso<A, A, C, C>) -> Iso<S, C> {
 	return lhs.compose(rhs)
 }
 

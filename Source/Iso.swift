@@ -67,6 +67,10 @@ public extension IsoGenerator {
 }
 
 public extension IsoGenerator {
+	public var asLIso: LIso<Source, AltSource, Target, AltTarget> {
+		return LIso(get: get, reverseGet: reverseGet)
+	}
+	
 	public var asLLens: LLens<Source, AltSource, Target, AltTarget> {
 		return LLens(get: get, set: set)
 	}

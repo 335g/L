@@ -34,6 +34,18 @@ public extension SetterGenerator {
 	}
 }
 
+public extension SetterGenerator {
+	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
+		return LSetter(modify: modify)
+	}
+}
+
+public extension SetterGenerator where Source == AltSource, Target == AltTarget {
+	public var asSetter: Setter<Source, Target> {
+		return Setter(modify: modify)
+	}
+}
+
 // MARK: - LSetter
 
 public struct LSetter<S, T, A, B> {

@@ -50,6 +50,10 @@ public extension LensGenerator {
 		return LSetter(modify: modify)
 	}
 	
+	public var asLLens: LLens<Source, AltSource, Target, AltTarget> {
+		return LLens(get: get, set: set)
+	}
+	
 	public var asGetter: Getter<Source, Target> {
 		return Getter(get: get)
 	}
