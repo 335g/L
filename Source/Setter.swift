@@ -56,6 +56,12 @@ public extension SetterGenerator where Source == AltSource, Target == AltTarget 
 
 // MARK: - LSetter
 
+/// A `LSetter` describes a way of applying a transformation to a subpart of a structure.
+///
+/// - parameter S: The structure to be modified
+/// - parameter T: The modified form of the structure
+/// - parameter A: The existing subpart to be modified
+/// - parameter B: The result of modifying the subpart
 public struct LSetter<S, T, A, B> {
 	private let _modify: (S, (A) -> B) -> T
 	
@@ -77,6 +83,10 @@ extension LSetter: SetterGenerator {
 
 // MARK: - Setter
 
+/// A `Setter` describes a way of applying a transformation to a subpart of a structure.
+///
+/// - parameter S: The structure
+/// - parameter A: The subpart of a structure
 public struct Setter<S, A> {
 	private let _modify: (S, (A) -> A) -> S
 	

@@ -1,5 +1,7 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
+import Bass
+
 // MARK: - LensProtocol
 
 public protocol LensProtocol: GetterProtocol, SetterProtocol {}
@@ -21,13 +23,14 @@ public extension LensGenerator {
 		L2.Target		== (Target, A1),
 		L2.AltTarget	== (AltTarget, B1)> (_ other: L1) -> L2
 	{
-		let get: (Source, S1) -> (Target, A1) = {
-			(self.get(from: $0), other.get(from: $1))
-		}
 		let set: ((AltTarget, B1), (Source, S1)) -> (AltSource, T1) = { (t0, t1) in
 			(self.set(t0.0, to: t1.0), other.set(t0.1, to: t1.1))
 		}
-		return L2(get: get,set: set)
+		
+		return L2(
+			get: { (self.get(from: $0), other.get(from: $1)) },
+			set: set
+		)
 	}
 	
 	public func first <T, L: LensGenerator where
@@ -89,6 +92,13 @@ public extension LensGenerator where Source == AltSource, Target == AltTarget {
 
 // MARK: - LLens
 
+///
+/// A `LLens` can be thought of as a reference to a subpart of a structure. (weaker `LIso`)
+///
+/// - parameter S: focused structure
+/// - parameter T: modified form of the structure
+/// - parameter A: result of retrieving the focused subpart
+/// - parameter B: modification to make to the original structure
 public struct LLens<S, T, A, B> {
 	private let _get: (S) -> A
 	private let _set: (B, S) -> T
@@ -120,6 +130,11 @@ extension LLens: LensGenerator {
 
 // MARK: - Lens
 
+///
+/// A `Lens` can be thought of as a reference to a subpart of a structure. (weaker `Iso`)
+///
+/// - parameter S:
+/// - parameter A:
 public struct Lens<S, A> {
 	private let _get: (S) -> A
 	private let _set: (A, S) -> S

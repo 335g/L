@@ -56,6 +56,11 @@ public extension GetterGenerator {
 
 // MARK: - Getter
 
+///
+/// A `Getter` is equal to getter method.
+///
+/// - parameter S: source
+/// - parameter A: target
 public struct Getter<S, A> {
 	private let _get: (S) -> A
 	

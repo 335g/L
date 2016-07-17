@@ -89,7 +89,8 @@ public extension PrismGenerator {
 		let tryGet: (Either<T, Source>) -> Either<Either<T, AltSource>, Either<T, Target>> = { e in
 			e.either(
 				ifLeft: Either.left • Either.left,
-				ifRight: { self.tryGet(from: $0).bimap(Either.right, Either.right) })
+				ifRight: { self.tryGet(from: $0).bimap(Either.right, Either.right) }
+			)
 		}
 		
 		return P(
@@ -145,6 +146,13 @@ public extension PrismGenerator where Source == AltSource {
 
 // MARK: - LPrism
 
+///
+/// A `LPrism` describes a way of focusing on potentially more than one target structure.
+///
+/// - parameter S: source
+/// - parameter T: modified source
+/// - parameter A: possible target
+/// - parameter B: modified target
 public struct LPrism<S, T, A, B> {
 	private let _tryGet: (S) -> Either<T, A>
 	private let _reverseGet: (B) -> T
@@ -172,6 +180,11 @@ extension LPrism: PrismGenerator {
 
 // MARK: - Prism
 
+///
+/// A `Prism` describes a way of focusing on potentially more than one target structure.
+///
+/// - parameter S: source
+/// - parameter A: possible target
 public struct Prism<S, A> {
 	private let _tryGet: (S) -> Either<S, A>
 	private let _reverseGet: (A) -> S

@@ -31,14 +31,10 @@ public extension IsoGenerator {
 		I2.Target		== (Target, A1),
 		I2.AltTarget	== (AltTarget, B1)> (_ other: I1) -> I2
 	{
-		let get: (Source, S1) -> (Target, A1) = {
-			(self.get(from: $0), other.get(from: $1))
-		}
-		let reverseGet: (AltTarget, B1) -> (AltSource, T1) = {
-			(self.reverseGet(from: $0), other.reverseGet(from: $1))
-		}
-		
-		return I2(get: get, reverseGet: reverseGet)
+		return I2(
+			get: { (self.get(from: $0), other.get(from: $1)) },
+			reverseGet: { (self.reverseGet(from: $0), other.reverseGet(from: $1)) }
+		)
 	}
 	
 	public func first <T, I: IsoGenerator where
@@ -132,6 +128,13 @@ public extension IsoGenerator where Source == AltSource, Target == AltTarget {
 
 // MARK: - LIso
 
+///
+/// An isomorphism between S, A and B, T
+///
+/// - parameter S: The source of the first function of the isomorphism
+/// - parameter T: The target of the second function of the isomorphism
+/// - parameter A: The target of the first function of the isomorphism
+/// - parameter B: The source of the second function of the isomorphism
 public struct LIso<S, T, A, B> {
 	private let _get: (S) -> A
 	private let _reverseGet: (B) -> T
@@ -165,6 +168,11 @@ public extension LIso {
 
 // MARK: - Iso
 
+///
+/// An isomorphism S, A
+///
+/// - parameter S: The source/target of the isomorphism
+/// - parameter A: The target/source of the isomorphism
 public struct Iso<S, A> {
 	private let _get: (S) -> A
 	private let _reverseGet: (A) -> S
