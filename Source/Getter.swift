@@ -2,6 +2,32 @@
 
 import Bass
 
+// MARK: - Getter
+
+///
+/// A `Getter` is equal to getter method.
+///
+/// - parameter S: source
+/// - parameter A: target
+public struct Getter<S, A> {
+	private let _get: (S) -> A
+	
+	public init(get: (S) -> A) {
+		_get = get
+	}
+}
+
+extension Getter: GetterGenerator {
+	public typealias Source = S
+	public typealias Target = A
+	
+	public func get(from: S) -> A {
+		return _get(from)
+	}
+}
+
+
+
 // MARK: - GetterProtocol
 
 public protocol GetterProtocol: SimpleOpticsType {
@@ -54,26 +80,3 @@ public extension GetterGenerator {
 	}
 }
 
-// MARK: - Getter
-
-///
-/// A `Getter` is equal to getter method.
-///
-/// - parameter S: source
-/// - parameter A: target
-public struct Getter<S, A> {
-	private let _get: (S) -> A
-	
-	public init(get: (S) -> A) {
-		_get = get
-	}
-}
-
-extension Getter: GetterGenerator {
-	public typealias Source = S
-	public typealias Target = A
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-}

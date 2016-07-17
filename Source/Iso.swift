@@ -2,6 +2,86 @@
 
 import Bass
 
+// MARK: - LIso
+
+///
+/// An isomorphism between S, A and B, T
+///
+/// - parameter S: The source of the first function of the isomorphism
+/// - parameter T: The target of the second function of the isomorphism
+/// - parameter A: The target of the first function of the isomorphism
+/// - parameter B: The source of the second function of the isomorphism
+public struct LIso<S, T, A, B> {
+	private let _get: (S) -> A
+	private let _reverseGet: (B) -> T
+	
+	public init(get: (S) -> A, reverseGet: (B) -> T) {
+		_get = get
+		_reverseGet = reverseGet
+	}
+}
+
+extension LIso: IsoGenerator {
+	public typealias Source = S
+	public typealias AltSource = T
+	public typealias Target = A
+	public typealias AltTarget = B
+	
+	public func get(from: S) -> A {
+		return _get(from)
+	}
+	
+	public func reverseGet(from: B) -> T {
+		return _reverseGet(from)
+	}
+}
+
+public extension LIso {
+	public var reverse: LIso<B, A, T, S> {
+		return LIso<B, A, T, S>(get: _reverseGet, reverseGet: _get)
+	}
+}
+
+// MARK: - Iso
+
+///
+/// An isomorphism S, A
+///
+/// - parameter S: The source/target of the isomorphism
+/// - parameter A: The target/source of the isomorphism
+public struct Iso<S, A> {
+	private let _get: (S) -> A
+	private let _reverseGet: (A) -> S
+	
+	public init(get: (S) -> A, reverseGet: (A) -> S) {
+		_get = get
+		_reverseGet = reverseGet
+	}
+}
+
+extension Iso: IsoGenerator {
+	public typealias Source = S
+	public typealias AltSource = S
+	public typealias Target = A
+	public typealias AltTarget = A
+	
+	public func get(from: S) -> A {
+		return _get(from)
+	}
+	
+	public func reverseGet(from: A) -> S {
+		return _reverseGet(from)
+	}
+}
+
+public extension Iso {
+	public var reverse: Iso<A, S> {
+		return Iso<A, S>(get: _reverseGet, reverseGet: _get)
+	}
+}
+
+
+
 // MARK: - IsoProtocol
 
 public protocol IsoProtocol: PrismProtocol, LensProtocol {
@@ -123,83 +203,5 @@ public extension IsoGenerator where Source == AltSource, Target == AltTarget {
 	
 	public var asIso: Iso<Source, Target> {
 		return Iso(get: get, reverseGet: reverseGet)
-	}
-}
-
-// MARK: - LIso
-
-///
-/// An isomorphism between S, A and B, T
-///
-/// - parameter S: The source of the first function of the isomorphism
-/// - parameter T: The target of the second function of the isomorphism
-/// - parameter A: The target of the first function of the isomorphism
-/// - parameter B: The source of the second function of the isomorphism
-public struct LIso<S, T, A, B> {
-	private let _get: (S) -> A
-	private let _reverseGet: (B) -> T
-	
-	public init(get: (S) -> A, reverseGet: (B) -> T) {
-		_get = get
-		_reverseGet = reverseGet
-	}
-}
-
-extension LIso: IsoGenerator {
-	public typealias Source = S
-	public typealias AltSource = T
-	public typealias Target = A
-	public typealias AltTarget = B
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-	
-	public func reverseGet(from: B) -> T {
-		return _reverseGet(from)
-	}
-}
-
-public extension LIso {
-	public var reverse: LIso<B, A, T, S> {
-		return LIso<B, A, T, S>(get: _reverseGet, reverseGet: _get)
-	}
-}
-
-// MARK: - Iso
-
-///
-/// An isomorphism S, A
-///
-/// - parameter S: The source/target of the isomorphism
-/// - parameter A: The target/source of the isomorphism
-public struct Iso<S, A> {
-	private let _get: (S) -> A
-	private let _reverseGet: (A) -> S
-	
-	public init(get: (S) -> A, reverseGet: (A) -> S) {
-		_get = get
-		_reverseGet = reverseGet
-	}
-}
-
-extension Iso: IsoGenerator {
-	public typealias Source = S
-	public typealias AltSource = S
-	public typealias Target = A
-	public typealias AltTarget = A
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-	
-	public func reverseGet(from: A) -> S {
-		return _reverseGet(from)
-	}
-}
-
-public extension Iso {
-	public var reverse: Iso<A, S> {
-		return Iso<A, S>(get: _reverseGet, reverseGet: _get)
 	}
 }

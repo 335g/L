@@ -2,6 +2,82 @@
 
 import Bass
 
+// MARK: - LLens
+
+///
+/// A `LLens` can be thought of as a reference to a subpart of a structure. (weaker `LIso`)
+///
+/// - parameter S: focused structure
+/// - parameter T: modified form of the structure
+/// - parameter A: result of retrieving the focused subpart
+/// - parameter B: modification to make to the original structure
+public struct LLens<S, T, A, B> {
+	private let _get: (S) -> A
+	private let _set: (B, S) -> T
+	
+	public init(get: (S) -> A, set: (B, S) -> T) {
+		_get = get
+		_set = set
+	}
+}
+
+extension LLens: LensGenerator {
+	public typealias Source = S
+	public typealias AltSource = T
+	public typealias Target = A
+	public typealias AltTarget = B
+	
+	public func get(from: S) -> A {
+		return _get(from)
+	}
+	
+	public func modify(_ x: S, as f: (A) -> B) -> T {
+		return _set(f(_get(x)), x)
+	}
+	
+	public func set(_ y: B, to x: S) -> T {
+		return _set(y, x)
+	}
+}
+
+// MARK: - Lens
+
+///
+/// A `Lens` can be thought of as a reference to a subpart of a structure. (weaker `Iso`)
+///
+/// - parameter S:
+/// - parameter A:
+public struct Lens<S, A> {
+	private let _get: (S) -> A
+	private let _set: (A, S) -> S
+	
+	public init(get: (S) -> A, set: (A, S) -> S) {
+		_get = get
+		_set = set
+	}
+}
+
+extension Lens: LensGenerator {
+	public typealias Source = S
+	public typealias AltSource = S
+	public typealias Target = A
+	public typealias AltTarget = A
+	
+	public func get(from: S) -> A {
+		return _get(from)
+	}
+	
+	public func modify(_ x: S, as f: (A) -> A) -> S {
+		return _set(f(_get(x)), x)
+	}
+	
+	public func set(_ y: A, to x: S) -> S {
+		return _set(y, x)
+	}
+}
+
+
+
 // MARK: - LensProtocol
 
 public protocol LensProtocol: GetterProtocol, SetterProtocol {}
@@ -87,79 +163,5 @@ public extension LensGenerator where Source == AltSource, Target == AltTarget {
 	
 	public var asLens: Lens<Source, Target> {
 		return Lens(get: get, set: set)
-	}
-}
-
-// MARK: - LLens
-
-///
-/// A `LLens` can be thought of as a reference to a subpart of a structure. (weaker `LIso`)
-///
-/// - parameter S: focused structure
-/// - parameter T: modified form of the structure
-/// - parameter A: result of retrieving the focused subpart
-/// - parameter B: modification to make to the original structure
-public struct LLens<S, T, A, B> {
-	private let _get: (S) -> A
-	private let _set: (B, S) -> T
-	
-	public init(get: (S) -> A, set: (B, S) -> T) {
-		_get = get
-		_set = set
-	}
-}
-
-extension LLens: LensGenerator {
-	public typealias Source = S
-	public typealias AltSource = T
-	public typealias Target = A
-	public typealias AltTarget = B
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-	
-	public func modify(_ x: S, as f: (A) -> B) -> T {
-		return _set(f(_get(x)), x)
-	}
-	
-	public func set(_ y: B, to x: S) -> T {
-		return _set(y, x)
-	}
-}
-
-// MARK: - Lens
-
-///
-/// A `Lens` can be thought of as a reference to a subpart of a structure. (weaker `Iso`)
-///
-/// - parameter S:
-/// - parameter A:
-public struct Lens<S, A> {
-	private let _get: (S) -> A
-	private let _set: (A, S) -> S
-	
-	public init(get: (S) -> A, set: (A, S) -> S) {
-		_get = get
-		_set = set
-	}
-}
-
-extension Lens: LensGenerator {
-	public typealias Source = S
-	public typealias AltSource = S
-	public typealias Target = A
-	public typealias AltTarget = A
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-	
-	public func modify(_ x: S, as f: (A) -> A) -> S {
-		return _set(f(_get(x)), x)
-	}
-	
-	public func set(_ y: A, to x: S) -> S {
-		return _set(y, x)
 	}
 }

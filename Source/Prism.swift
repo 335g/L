@@ -2,6 +2,74 @@
 
 import Bass
 
+// MARK: - LPrism
+
+///
+/// A `LPrism` describes a way of focusing on potentially more than one target structure.
+///
+/// - parameter S: source
+/// - parameter T: modified source
+/// - parameter A: possible target
+/// - parameter B: modified target
+public struct LPrism<S, T, A, B> {
+	private let _tryGet: (S) -> Either<T, A>
+	private let _reverseGet: (B) -> T
+	
+	public init(tryGet: (S) -> Either<T, A>, reverseGet: (B) -> T) {
+		_tryGet = tryGet
+		_reverseGet = reverseGet
+	}
+}
+
+extension LPrism: PrismGenerator {
+	public typealias Source = S
+	public typealias AltSource = T
+	public typealias Target = A
+	public typealias AltTarget = B
+	
+	public func tryGet(from: S) -> Either<T, A> {
+		return _tryGet(from)
+	}
+	
+	public func reverseGet(from: B) -> T {
+		return _reverseGet(from)
+	}
+}
+
+// MARK: - Prism
+
+///
+/// A `Prism` describes a way of focusing on potentially more than one target structure.
+///
+/// - parameter S: source
+/// - parameter A: possible target
+public struct Prism<S, A> {
+	private let _tryGet: (S) -> Either<S, A>
+	private let _reverseGet: (A) -> S
+	
+	public init(tryGet: (S) -> Either<S, A>, reverseGet: (A) -> S) {
+		_tryGet = tryGet
+		_reverseGet = reverseGet
+	}
+}
+
+extension Prism: PrismGenerator {
+	public typealias Source = S
+	public typealias AltSource = S
+	public typealias Target = A
+	public typealias AltTarget = A
+	
+	public func tryGet(from: S) -> Either<S, A> {
+		return _tryGet(from)
+	}
+	
+	public func reverseGet(from: A) -> S {
+		return _reverseGet(from)
+	}
+}
+
+
+
 // MARK: - PrismProtocol
 
 public protocol PrismProtocol: SetterProtocol {
@@ -143,71 +211,3 @@ public extension PrismGenerator where Source == AltSource {
 		return Prism(tryGet: g, reverseGet: reverseGet)
 	}
 }
-
-// MARK: - LPrism
-
-///
-/// A `LPrism` describes a way of focusing on potentially more than one target structure.
-///
-/// - parameter S: source
-/// - parameter T: modified source
-/// - parameter A: possible target
-/// - parameter B: modified target
-public struct LPrism<S, T, A, B> {
-	private let _tryGet: (S) -> Either<T, A>
-	private let _reverseGet: (B) -> T
-	
-	public init(tryGet: (S) -> Either<T, A>, reverseGet: (B) -> T) {
-		_tryGet = tryGet
-		_reverseGet = reverseGet
-	}
-}
-
-extension LPrism: PrismGenerator {
-	public typealias Source = S
-	public typealias AltSource = T
-	public typealias Target = A
-	public typealias AltTarget = B
-	
-	public func tryGet(from: S) -> Either<T, A> {
-		return _tryGet(from)
-	}
-	
-	public func reverseGet(from: B) -> T {
-		return _reverseGet(from)
-	}
-}
-
-// MARK: - Prism
-
-///
-/// A `Prism` describes a way of focusing on potentially more than one target structure.
-///
-/// - parameter S: source
-/// - parameter A: possible target
-public struct Prism<S, A> {
-	private let _tryGet: (S) -> Either<S, A>
-	private let _reverseGet: (A) -> S
-	
-	public init(tryGet: (S) -> Either<S, A>, reverseGet: (A) -> S) {
-		_tryGet = tryGet
-		_reverseGet = reverseGet
-	}
-}
-
-extension Prism: PrismGenerator {
-	public typealias Source = S
-	public typealias AltSource = S
-	public typealias Target = A
-	public typealias AltTarget = A
-	
-	public func tryGet(from: S) -> Either<S, A> {
-		return _tryGet(from)
-	}
-	
-	public func reverseGet(from: A) -> S {
-		return _reverseGet(from)
-	}
-}
-
-

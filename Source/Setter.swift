@@ -2,6 +2,60 @@
 
 import Bass
 
+// MARK: - LSetter
+
+/// A `LSetter` describes a way of applying a transformation to a subpart of a structure.
+///
+/// - parameter S: The structure to be modified
+/// - parameter T: The modified form of the structure
+/// - parameter A: The existing subpart to be modified
+/// - parameter B: The result of modifying the subpart
+public struct LSetter<S, T, A, B> {
+	private let _modify: (S, (A) -> B) -> T
+	
+	public init(modify: (S, (A) -> B) -> T) {
+		_modify = modify
+	}
+}
+
+extension LSetter: SetterGenerator {
+	public typealias Source = S
+	public typealias AltSource = T
+	public typealias Target = A
+	public typealias AltTarget = B
+	
+	public func modify(_ x: S, as f: (A) -> B) -> T {
+		return _modify(x, f)
+	}
+}
+
+// MARK: - Setter
+
+/// A `Setter` describes a way of applying a transformation to a subpart of a structure.
+///
+/// - parameter S: The structure
+/// - parameter A: The subpart of a structure
+public struct Setter<S, A> {
+	private let _modify: (S, (A) -> A) -> S
+	
+	public init(modify: (S, (A) -> A) -> S) {
+		_modify = modify
+	}
+}
+
+extension Setter: SetterGenerator {
+	public typealias Source = S
+	public typealias AltSource = S
+	public typealias Target = A
+	public typealias AltTarget = A
+	
+	public func modify(_ x: S, as f: (A) -> A) -> S {
+		return _modify(x, f)
+	}
+}
+
+
+
 // MARK: - SetterProtocol
 
 public protocol SetterProtocol: OpticsType {
@@ -54,54 +108,3 @@ public extension SetterGenerator where Source == AltSource, Target == AltTarget 
 	}
 }
 
-// MARK: - LSetter
-
-/// A `LSetter` describes a way of applying a transformation to a subpart of a structure.
-///
-/// - parameter S: The structure to be modified
-/// - parameter T: The modified form of the structure
-/// - parameter A: The existing subpart to be modified
-/// - parameter B: The result of modifying the subpart
-public struct LSetter<S, T, A, B> {
-	private let _modify: (S, (A) -> B) -> T
-	
-	public init(modify: (S, (A) -> B) -> T) {
-		_modify = modify
-	}
-}
-
-extension LSetter: SetterGenerator {
-	public typealias Source = S
-	public typealias AltSource = T
-	public typealias Target = A
-	public typealias AltTarget = B
-	
-	public func modify(_ x: S, as f: (A) -> B) -> T {
-		return _modify(x, f)
-	}
-}
-
-// MARK: - Setter
-
-/// A `Setter` describes a way of applying a transformation to a subpart of a structure.
-///
-/// - parameter S: The structure
-/// - parameter A: The subpart of a structure
-public struct Setter<S, A> {
-	private let _modify: (S, (A) -> A) -> S
-	
-	public init(modify: (S, (A) -> A) -> S) {
-		_modify = modify
-	}
-}
-
-extension Setter: SetterGenerator {
-	public typealias Source = S
-	public typealias AltSource = S
-	public typealias Target = A
-	public typealias AltTarget = A
-	
-	public func modify(_ x: S, as f: (A) -> A) -> S {
-		return _modify(x, f)
-	}
-}
