@@ -1,4 +1,3 @@
-github "335g/Bass" "c5d4a92a8f6ee9b9ad063e394e0aaa76634fbbbd"
-github "ikesyo/Himotoki" "ee17e38660fabebbf0cee6a554552ed4c5cde2be"
-github "typelift/SwiftCheck" "8ca6a6921cda96bbb6287a747d1087a59d413b59"
-github "335g/Typewriter" "d8ecfe4547e3e40c455729a920d4bc181956fd67"
+github "robrix/Prelude" "2.0.0"
+github "typelift/SwiftCheck" "v0.7.0"
+github "robrix/Either" "94da4a2e695bd231e0b1b0bd2e0079f387030e86"

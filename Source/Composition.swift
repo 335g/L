@@ -1,12 +1,13 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
-import Bass
+import Prelude
+import Either
 
 // MARK: - Getter
 
 public extension Getter {
 	public func compose<C>(_ other: Getter<A, C>) -> Getter<S, C> {
-		return Getter<S, C>(get: other.get • self.get)
+		return Getter<S, C>(get: other.get <<< self.get)
 	}
 	
 	public func compose<B, C, D>(_ other: LLens<A, B, C, D>) -> Getter<S, C> {
@@ -51,7 +52,7 @@ public func >>> <S, A, C>(lhs: Getter<S, A>, rhs: Iso<A, C>) -> Getter<S, C> {
 
 public extension LSetter {
 	public func compose<C, D>(_ other: LSetter<A, B, C, D>) -> LSetter<S, T, C, D> {
-		let compositionModify: (S, (C) -> D) -> T = { s, f in
+		let compositionModify: (S, @escaping (C) -> D) -> T = { s, f in
 			self.modify(s){ a in
 				other.modify(a, as: f)
 			}
@@ -93,7 +94,7 @@ public func >>> <S, T, A, B, C, D>(lhs: LSetter<S, T, A, B>, rhs: LIso<A, B, C, 
 
 public extension Setter {
 	public func compose<C>(_ other: Setter<A, C>) -> Setter<S, C> {
-		let compositionModify: (S, (C) -> C) -> S = { s, f in
+		let compositionModify: (S, @escaping (C) -> C) -> S = { s, f in
 			self.modify(s){ a in
 				other.modify(a, as: f)
 			}
@@ -170,13 +171,13 @@ public extension LPrism {
 		let compositionTryGet: (S) -> Either<T, C> = { s in
 			self.tryGet(from: s)
 				.flatMap{ a in
-					other.tryGet(from: a).map{ self.set($0, to: s) }
+					other.tryGet(from: a).mapLeft{ self.set($0, to: s) }
 				}
 		}
 		
 		return LPrism<S, T, C, D>(
 			tryGet: compositionTryGet,
-			reverseGet: self.reverseGet • other.reverseGet
+			reverseGet: self.reverseGet <<< other.reverseGet
 		)
 	}
 	
@@ -208,13 +209,13 @@ public extension Prism {
 		let compositionTryGet: (S) -> Either<S, C> = { s in
 			self.tryGet(from: s)
 				.flatMap{ a in
-					other.tryGet(from: a).map{ self.set($0, to: s) }
+					other.tryGet(from: a).mapLeft{ self.set($0, to: s) }
 				}
 		}
 		
 		return Prism<S, C>(
 			tryGet: compositionTryGet,
-			reverseGet: self.reverseGet • other.reverseGet
+			reverseGet: self.reverseGet <<< other.reverseGet
 		)
 	}
 	
@@ -268,7 +269,7 @@ public func >>> <S, A, C>(lhs: Prism<S, A>, rhs: Setter<A, C>) -> Setter<S, C> {
 public extension LLens {
 	public func compose<C, D>(_ other: LLens<A, B, C, D>) -> LLens<S, T, C, D> {
 		return LLens<S, T, C, D>(
-			get: other.get • self.get,
+			get: other.get <<< self.get,
 			set: { d, s in
 				self.modify(s){ other.set(d, to: $0) }
 			}
@@ -301,7 +302,7 @@ public func >>> <S, T, A, B, C, D>(lhs: LLens<S, T, A, B>, rhs: LSetter<A, B, C,
 public extension Lens {
 	public func compose<C>(_ other: Lens<A, C>) -> Lens<S, C> {
 		return Lens<S, C>(
-			get: other.get • self.get,
+			get: other.get <<< self.get,
 			set: { c, s in
 				self.modify(s){ other.set(c, to: $0) }
 			}
@@ -358,8 +359,8 @@ public func >>> <S, A, C>(lhs: Lens<S, A>, rhs: Setter<A, C>) -> Setter<S, C> {
 public extension LIso {
 	public func compose<C, D>(_ other: LIso<A, B, C, D>) -> LIso<S, T, C, D> {
 		return LIso<S, T, C, D>(
-			get: other.get • self.get,
-			reverseGet: self.reverseGet • other.reverseGet
+			get: other.get <<< self.get,
+			reverseGet: self.reverseGet <<< other.reverseGet
 		)
 	}
 	
@@ -397,8 +398,8 @@ public func >>> <S, T, A, B, C, D>(lhs: LIso<S, T, A, B>, rhs: LPrism<A, B, C, D
 public extension Iso {
 	public func compose<C>(_ other: Iso<A, C>) -> Iso<S, C> {
 		return Iso<S, C>(
-			get: other.get • self.get,
-			reverseGet: self.reverseGet • other.reverseGet
+			get: other.get <<< self.get,
+			reverseGet: self.reverseGet <<< other.reverseGet
 		)
 	}
 	

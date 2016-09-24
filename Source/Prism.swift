@@ -1,6 +1,7 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
-import Bass
+import Prelude
+import Either
 
 // MARK: - LPrism
 
@@ -12,10 +13,10 @@ import Bass
 /// - parameter A: possible target
 /// - parameter B: modified target
 public struct LPrism<S, T, A, B> {
-	private let _tryGet: (S) -> Either<T, A>
-	private let _reverseGet: (B) -> T
+	fileprivate let _tryGet: (S) -> Either<T, A>
+	fileprivate let _reverseGet: (B) -> T
 	
-	public init(tryGet: (S) -> Either<T, A>, reverseGet: (B) -> T) {
+	public init(tryGet: @escaping (S) -> Either<T, A>, reverseGet: @escaping (B) -> T) {
 		_tryGet = tryGet
 		_reverseGet = reverseGet
 	}
@@ -44,10 +45,10 @@ extension LPrism: PrismGenerator {
 /// - parameter S: source
 /// - parameter A: possible target
 public struct Prism<S, A> {
-	private let _tryGet: (S) -> Either<S, A>
-	private let _reverseGet: (A) -> S
+	fileprivate let _tryGet: (S) -> Either<S, A>
+	fileprivate let _reverseGet: (A) -> S
 	
-	public init(tryGet: (S) -> Either<S, A>, reverseGet: (A) -> S) {
+	public init(tryGet: @escaping (S) -> Either<S, A>, reverseGet: @escaping (A) -> S) {
 		_tryGet = tryGet
 		_reverseGet = reverseGet
 	}
@@ -78,10 +79,10 @@ public protocol PrismProtocol: SetterProtocol {
 }
 
 public extension PrismProtocol {
-	public func modify(_ x: Source, as f: (Target) -> AltTarget) -> AltSource {
+	public func modify(_ x: Source, as f: @escaping (Target) -> AltTarget) -> AltSource {
 		return tryGet(from: x).either(
 			ifLeft: id,
-			ifRight: reverseGet • f
+			ifRight: reverseGet <<< f
 		)
 	}
 	
@@ -93,18 +94,20 @@ public extension PrismProtocol {
 // MARK: - PrismGenerator
 
 public protocol PrismGenerator: PrismProtocol {
-	init(tryGet: (Source) -> Either<AltSource, Target>, reverseGet: (AltTarget) -> AltSource)
+	init(tryGet: @escaping (Source) -> Either<AltSource, Target>, reverseGet: @escaping (AltTarget) -> AltSource)
 }
 
 public extension PrismGenerator {
-	public func first <T, P: PrismGenerator where
+	public func first <T, P: PrismGenerator> () -> P where
 		P.Source	== (Source, T),
 		P.AltSource == (AltSource, T),
 		P.Target	== (Target, T),
-		P.AltTarget == (AltTarget, T)> () -> P
+		P.AltTarget == (AltTarget, T)
 	{
 		let tryGet: (Source, T) -> Either<(AltSource, T), (Target, T)> = { (s, x) in
-			self.tryGet(from: s).bimap({ ($0, x) }, { ($0, x) })
+			self.tryGet(from: s)
+				.map{ ($0, x) }
+				.mapLeft{ ($0, x) }
 		}
 		
 		return P (
@@ -113,14 +116,16 @@ public extension PrismGenerator {
 		)
 	}
 	
-	public func second <T, P: PrismGenerator where
+	public func second <T, P: PrismGenerator> () -> P where
 		P.Source	== (T, Source),
 		P.AltSource == (T, AltSource),
 		P.Target	== (T, Target),
-		P.AltTarget == (T, AltTarget)> () -> P
+		P.AltTarget == (T, AltTarget)
 	{
 		let tryGet: (T, Source) -> Either<(T, AltSource), (T, Target)> = { (x, s) in
-			self.tryGet(from: s).bimap({ (x, $0) }, { (x, $0) })
+			self.tryGet(from: s)
+				.map{ (x, $0) }
+				.mapLeft{ (x, $0) }
 		}
 		
 		return P (
@@ -129,35 +134,35 @@ public extension PrismGenerator {
 		)
 	}
 	
-	public func left <T, P: PrismGenerator where
+	public func left <T, P: PrismGenerator> () -> P where
 		P.Source	== Either<Source, T>,
 		P.AltSource == Either<AltSource, T>,
 		P.Target	== Either<Target, T>,
-		P.AltTarget == Either<AltTarget, T>> () -> P
+		P.AltTarget == Either<AltTarget, T>
 	{
 		let tryGet: (Either<Source, T>) -> Either<Either<AltSource, T>, Either<Target, T>> = { e in
 			e.either(
-				ifLeft: { self.tryGet(from: $0).bimap(Either.left, Either.left) },
-				ifRight: Either.right • Either.right
+				ifLeft: { self.tryGet(from: $0).map(Either.left).mapLeft(Either.left) },
+				ifRight: Either.right <<< Either.right
 			)
 		}
 		
 		return P (
 			tryGet: tryGet,
-			reverseGet: { $0.map(self.reverseGet) }
+			reverseGet: { $0.mapLeft(self.reverseGet) }
 		)
 	}
 	
-	public func right <T, P: PrismGenerator where
+	public func right <T, P: PrismGenerator> () -> P where
 		P.Source	== Either<T, Source>,
 		P.AltSource == Either<T, AltSource>,
 		P.Target	== Either<T, Target>,
-		P.AltTarget == Either<T, AltTarget>> () -> P
+		P.AltTarget == Either<T, AltTarget>
 	{
 		let tryGet: (Either<T, Source>) -> Either<Either<T, AltSource>, Either<T, Target>> = { e in
 			e.either(
-				ifLeft: Either.left • Either.left,
-				ifRight: { self.tryGet(from: $0).bimap(Either.right, Either.right) }
+				ifLeft: Either.left <<< Either.left,
+				ifRight: { self.tryGet(from: $0).map(Either.right).mapLeft(Either.right) }
 			)
 		}
 		
@@ -189,7 +194,7 @@ public extension PrismGenerator where Source == AltSource, Target == AltTarget {
 }
 
 public extension PrismGenerator where Source == AltSource {
-	public static func prism(tryGet: (Source) -> Target?, reverseGet: (AltTarget) -> Source) -> LPrism<Source, Source, Target, AltTarget> {
+	public static func prism(tryGet: @escaping (Source) -> Target?, reverseGet: @escaping (AltTarget) -> Source) -> LPrism<Source, Source, Target, AltTarget> {
 		let g: (Source) -> Either<Source, Target> = { source in
 			if let it = tryGet(source) {
 				return .right(it)
@@ -200,7 +205,7 @@ public extension PrismGenerator where Source == AltSource {
 		return LPrism(tryGet: g, reverseGet: reverseGet)
 	}
 	
-	public static func prism(tryGet: (Source) -> Target?, reverseGet: (Target) -> Source) -> Prism<Source, Target> {
+	public static func prism(tryGet: @escaping (Source) -> Target?, reverseGet: @escaping (Target) -> Source) -> Prism<Source, Target> {
 		let g: (Source) -> Either<Source, Target> = { source in
 			if let it = tryGet(source) {
 				return .right(it)

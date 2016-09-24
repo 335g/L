@@ -1,6 +1,9 @@
-[submodule "Carthage/Checkouts/Bass"]
-	path = Carthage/Checkouts/Bass
-	url = https://github.com/335g/Bass.git
 [submodule "Carthage/Checkouts/SwiftCheck"]
 	path = Carthage/Checkouts/SwiftCheck
 	url = https://github.com/typelift/SwiftCheck.git
+[submodule "Carthage/Checkouts/Prelude"]
+	path = Carthage/Checkouts/Prelude
+	url = https://github.com/robrix/Prelude.git
+[submodule "Carthage/Checkouts/Either"]
+	path = Carthage/Checkouts/Either
+	url = https://github.com/robrix/Either.git

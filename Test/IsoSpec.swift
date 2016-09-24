@@ -4,7 +4,7 @@
 /// These are implemented the [typelift/Focus](https://github.com/typelift/Focus) to the reference.
 
 import XCTest
-import Bass
+import Prelude
 import L
 import SwiftCheck
 

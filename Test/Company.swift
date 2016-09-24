@@ -1,7 +1,7 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
 import XCTest
-import Bass
+import Prelude
 import L
 
 struct Company {
