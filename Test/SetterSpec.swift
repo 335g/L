@@ -4,7 +4,7 @@
 /// These are implemented the [typelift/Focus](https://github.com/typelift/Focus) to the reference.
 
 import XCTest
-import Bass
+import Prelude
 import L
 import SwiftCheck
 
@@ -26,10 +26,10 @@ class LSetterSpec: XCTestCase {
 			let f : (UInt) -> UInt = { $0 * 1 }
 			let g : (UInt) -> UInt = { $0 + 2 }
 			
-			let mod: ((UInt) -> UInt) -> (Int) -> Int = { fn in { i in setter.modify(i, as: fn) }}
+			let mod: (@escaping (UInt) -> UInt) -> (Int) -> Int = { fn in { i in setter.modify(i, as: fn) }}
 			
 			return forAll { (i: Int) in
-				return (mod(f) • mod(g))(i) == mod(f • g)(i)
+				return (mod(f) <<< mod(g))(i) == mod(f <<< g)(i)
 			}
 		}
 	}
@@ -53,10 +53,10 @@ class SetterSpec: XCTestCase {
 			let f : (UInt) -> UInt = { $0 * 1 }
 			let g : (UInt) -> UInt = { $0 + 2 }
 			
-			let mod: ((UInt) -> UInt) -> (Int) -> Int = { fn in { i in setter.modify(i, as: fn) }}
+			let mod: (@escaping (UInt) -> UInt) -> (Int) -> Int = { fn in { i in setter.modify(i, as: fn) }}
 			
 			return forAll { (i: Int) in
-				return (mod(f) • mod(g))(i) == mod(f • g)(i)
+				return (mod(f) <<< mod(g))(i) == mod(f <<< g)(i)
 			}
 		}
 	}

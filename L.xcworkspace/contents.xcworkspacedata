@@ -8,7 +8,10 @@
       location = "group:L.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Carthage/Checkouts/Bass/Bass.xcodeproj">
+      location = "group:Carthage/Checkouts/Either/Either.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Carthage/Checkouts/Prelude/Prelude.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Carthage/Checkouts/SwiftCheck/SwiftCheck.xcodeproj">

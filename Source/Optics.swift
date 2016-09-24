@@ -1,11 +1,11 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
-public protocol SimpleOpticsType {
+public protocol SimpleOpticsProtocol {
 	associatedtype Source
 	associatedtype Target
 }
 
-public protocol OpticsType: SimpleOpticsType {
+public protocol OpticsProtocol: SimpleOpticsProtocol {
 	associatedtype AltSource
 	associatedtype AltTarget
 }

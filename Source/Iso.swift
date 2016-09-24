@@ -1,6 +1,6 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
-import Bass
+import Either
 
 // MARK: - LIso
 
@@ -12,10 +12,10 @@ import Bass
 /// - parameter A: The target of the first function of the isomorphism
 /// - parameter B: The source of the second function of the isomorphism
 public struct LIso<S, T, A, B> {
-	private let _get: (S) -> A
-	private let _reverseGet: (B) -> T
+	fileprivate let _get: (S) -> A
+	fileprivate let _reverseGet: (B) -> T
 	
-	public init(get: (S) -> A, reverseGet: (B) -> T) {
+	public init(get: @escaping (S) -> A, reverseGet: @escaping (B) -> T) {
 		_get = get
 		_reverseGet = reverseGet
 	}
@@ -50,10 +50,10 @@ public extension LIso {
 /// - parameter S: The source/target of the isomorphism
 /// - parameter A: The target/source of the isomorphism
 public struct Iso<S, A> {
-	private let _get: (S) -> A
-	private let _reverseGet: (A) -> S
+	fileprivate let _get: (S) -> A
+	fileprivate let _reverseGet: (A) -> S
 	
-	public init(get: (S) -> A, reverseGet: (A) -> S) {
+	public init(get: @escaping (S) -> A, reverseGet: @escaping (A) -> S) {
 		_get = get
 		_reverseGet = reverseGet
 	}
@@ -97,11 +97,11 @@ public extension IsoProtocol {
 // MARK: - IsoGenerator
 
 public protocol IsoGenerator: IsoProtocol {
-	init(get: (Source) -> Target, reverseGet: (AltTarget) -> AltSource)
+	init(get: @escaping (Source) -> Target, reverseGet: @escaping (AltTarget) -> AltSource)
 }
 
 public extension IsoGenerator {
-	public func split <S1, T1, A1, B1, I1: IsoGenerator, I2: IsoGenerator where
+	public func split <S1, T1, A1, B1, I1: IsoGenerator, I2: IsoGenerator> (_ other: I1) -> I2 where
 		I1.Source		== S1,
 		I1.AltSource	== T1,
 		I1.Target		== A1,
@@ -109,7 +109,7 @@ public extension IsoGenerator {
 		I2.Source		== (Source, S1),
 		I2.AltSource	== (AltSource, T1),
 		I2.Target		== (Target, A1),
-		I2.AltTarget	== (AltTarget, B1)> (_ other: I1) -> I2
+		I2.AltTarget	== (AltTarget, B1)
 	{
 		return I2(
 			get: { (self.get(from: $0), other.get(from: $1)) },
@@ -117,11 +117,11 @@ public extension IsoGenerator {
 		)
 	}
 	
-	public func first <T, I: IsoGenerator where
+	public func first <T, I: IsoGenerator> () -> I where
 		I.Source	== (Source, T),
 		I.AltSource == (AltSource, T),
 		I.Target	== (Target, T),
-		I.AltTarget == (AltTarget, T)> () -> I
+		I.AltTarget == (AltTarget, T)
 	{
 		return I(
 			get: { (s, t) in (self.get(from: s), t) },
@@ -129,11 +129,11 @@ public extension IsoGenerator {
 		)
 	}
 	
-	public func second <T, I: IsoGenerator where
+	public func second <T, I: IsoGenerator> () -> I where
 		I.Source	== (T, Source),
 		I.AltSource == (T, AltSource),
 		I.Target	== (T, Target),
-		I.AltTarget == (T, AltTarget)> () -> I
+		I.AltTarget == (T, AltTarget)
 	{
 		return I(
 			get: { (t, s) in (t, self.get(from: s)) },
@@ -141,23 +141,23 @@ public extension IsoGenerator {
 		)
 	}
 	
-	public func left <T, I: IsoGenerator where
+	public func left <T, I: IsoGenerator> () -> I where
 		I.Source	== Either<Source, T>,
 		I.AltSource == Either<AltSource, T>,
 		I.Target	== Either<Target, T>,
-		I.AltTarget == Either<AltTarget, T>> () -> I
+		I.AltTarget == Either<AltTarget, T>
 	{
 		return I(
-			get: { $0.map(self.get) },
-			reverseGet: { $0.map(self.reverseGet) }
+			get: { $0.mapLeft(self.get) },
+			reverseGet: { $0.mapLeft(self.reverseGet) }
 		)
 	}
 	
-	public func right <T, I: IsoGenerator where
+	public func right <T, I: IsoGenerator> () -> I where
 		I.Source	== Either<T, Source>,
 		I.AltSource == Either<T, AltSource>,
 		I.Target	== Either<T, Target>,
-		I.AltTarget == Either<T, AltTarget>> () -> I
+		I.AltTarget == Either<T, AltTarget>
 	{
 		return I(
 			get: { $0.map(self.get) },

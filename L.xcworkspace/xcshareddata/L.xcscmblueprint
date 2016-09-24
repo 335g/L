@@ -4,21 +4,25 @@
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "892A392662EFD968ECAC00BEDD3BE4AF0F19F413" : 0,
-    "53964F28C4CCA0826677C9F951DD3F64C20326C4" : 0,
+    "724522004541BF6A9932EA9534E8B277C2E6B5E6" : 0,
     "45481943CEB6C432ADDA6C3AEA2CDA67F8F4C971" : 0,
+    "D5FA66743146831DA2A20C0EAE4583EF424D9041" : 9223372036854775807,
+    "9A760A1EBAC1979D46EF016B1BE84D98E53C16FF" : 9223372036854775807,
+    "53964F28C4CCA0826677C9F951DD3F64C20326C4" : 0,
     "703FC25FD86D6F44849F561FD24EEFE85B252B81" : 0,
-    "E084C86B03F81D63323C9E7510697EA528A758C7" : 0,
-    "724522004541BF6A9932EA9534E8B277C2E6B5E6" : 0
+    "892A392662EFD968ECAC00BEDD3BE4AF0F19F413" : 0,
+    "E084C86B03F81D63323C9E7510697EA528A758C7" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9AF5A89B-7783-44D7-B8E2-F6790029B8EF",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "892A392662EFD968ECAC00BEDD3BE4AF0F19F413" : "L\/Carthage\/Checkouts\/Himotoki\/",
-    "53964F28C4CCA0826677C9F951DD3F64C20326C4" : "L\/Carthage\/Checkouts\/SwiftCheck\/",
+    "724522004541BF6A9932EA9534E8B277C2E6B5E6" : "L\/",
     "45481943CEB6C432ADDA6C3AEA2CDA67F8F4C971" : "L\/Carthage\/Checkouts\/Bass\/",
+    "D5FA66743146831DA2A20C0EAE4583EF424D9041" : "L\/Carthage\/Checkouts\/Either\/",
+    "9A760A1EBAC1979D46EF016B1BE84D98E53C16FF" : "L\/Carthage\/Checkouts\/Prelude\/",
+    "53964F28C4CCA0826677C9F951DD3F64C20326C4" : "L\/Carthage\/Checkouts\/SwiftCheck\/",
     "703FC25FD86D6F44849F561FD24EEFE85B252B81" : "L\/Carthage\/Checkouts\/Typewriter\/",
-    "E084C86B03F81D63323C9E7510697EA528A758C7" : "L\/Carthage\/Checkouts\/Himotoki\/Carthage\/Checkouts\/xcconfigs\/",
-    "724522004541BF6A9932EA9534E8B277C2E6B5E6" : "L\/"
+    "892A392662EFD968ECAC00BEDD3BE4AF0F19F413" : "L\/Carthage\/Checkouts\/Himotoki\/",
+    "E084C86B03F81D63323C9E7510697EA528A758C7" : "L\/Carthage\/Checkouts\/Himotoki\/Carthage\/Checkouts\/xcconfigs\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "L",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -48,6 +52,16 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ikesyo\/Himotoki.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "892A392662EFD968ECAC00BEDD3BE4AF0F19F413"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/robrix\/Prelude.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9A760A1EBAC1979D46EF016B1BE84D98E53C16FF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/robrix\/Either.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D5FA66743146831DA2A20C0EAE4583EF424D9041"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jspahrsummers\/xcconfigs.git",

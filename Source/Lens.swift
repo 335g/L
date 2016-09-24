@@ -1,6 +1,6 @@
 //  Copyright © 2016 Yoshiki Kudo. All rights reserved.
 
-import Bass
+
 
 // MARK: - LLens
 
@@ -12,10 +12,10 @@ import Bass
 /// - parameter A: result of retrieving the focused subpart
 /// - parameter B: modification to make to the original structure
 public struct LLens<S, T, A, B> {
-	private let _get: (S) -> A
-	private let _set: (B, S) -> T
+	fileprivate let _get: (S) -> A
+	fileprivate let _set: (B, S) -> T
 	
-	public init(get: (S) -> A, set: (B, S) -> T) {
+	public init(get: @escaping (S) -> A, set: @escaping (B, S) -> T) {
 		_get = get
 		_set = set
 	}
@@ -31,7 +31,7 @@ extension LLens: LensGenerator {
 		return _get(from)
 	}
 	
-	public func modify(_ x: S, as f: (A) -> B) -> T {
+	public func modify(_ x: S, as f: @escaping (A) -> B) -> T {
 		return _set(f(_get(x)), x)
 	}
 	
@@ -48,10 +48,10 @@ extension LLens: LensGenerator {
 /// - parameter S:
 /// - parameter A:
 public struct Lens<S, A> {
-	private let _get: (S) -> A
-	private let _set: (A, S) -> S
+	fileprivate let _get: (S) -> A
+	fileprivate let _set: (A, S) -> S
 	
-	public init(get: (S) -> A, set: (A, S) -> S) {
+	public init(get: @escaping (S) -> A, set: @escaping (A, S) -> S) {
 		_get = get
 		_set = set
 	}
@@ -67,7 +67,7 @@ extension Lens: LensGenerator {
 		return _get(from)
 	}
 	
-	public func modify(_ x: S, as f: (A) -> A) -> S {
+	public func modify(_ x: S, as f: @escaping (A) -> A) -> S {
 		return _set(f(_get(x)), x)
 	}
 	
@@ -85,11 +85,11 @@ public protocol LensProtocol: GetterProtocol, SetterProtocol {}
 // MARK: - LensGenerator
 
 public protocol LensGenerator: LensProtocol {
-	init(get: (Source) -> Target, set: (AltTarget, Source) -> AltSource)
+	init(get: @escaping (Source) -> Target, set: @escaping (AltTarget, Source) -> AltSource)
 }
 
 public extension LensGenerator {
-	public func split <S1, T1, A1, B1, L1: LensGenerator, L2: LensGenerator where
+	public func split <S1, T1, A1, B1, L1: LensGenerator, L2: LensGenerator> (_ other: L1) -> L2 where
 		L1.Source		== S1,
 		L1.AltSource	== T1,
 		L1.Target		== A1,
@@ -97,7 +97,7 @@ public extension LensGenerator {
 		L2.Source		== (Source, S1),
 		L2.AltSource	== (AltSource, T1),
 		L2.Target		== (Target, A1),
-		L2.AltTarget	== (AltTarget, B1)> (_ other: L1) -> L2
+		L2.AltTarget	== (AltTarget, B1)
 	{
 		let set: ((AltTarget, B1), (Source, S1)) -> (AltSource, T1) = { (t0, t1) in
 			(self.set(t0.0, to: t1.0), other.set(t0.1, to: t1.1))
@@ -109,11 +109,11 @@ public extension LensGenerator {
 		)
 	}
 	
-	public func first <T, L: LensGenerator where
+	public func first <T, L: LensGenerator> () -> L where
 		L.Source	== (Source, T),
 		L.AltSource == (AltSource, T),
 		L.Target	== (Target, T),
-		L.AltTarget == (AltTarget, T)> () -> L
+		L.AltTarget == (AltTarget, T)
 	{
 		let set: ((AltTarget, T), (Source, T)) -> (AltSource, T) = { (t0, t1) in
 			(self.set(t0.0, to: t1.0), t0.1)
@@ -125,11 +125,11 @@ public extension LensGenerator {
 		)
 	}
 	
-	public func second <T, L: LensGenerator where
+	public func second <T, L: LensGenerator> () -> L where
 		L.Source	== (T, Source),
 		L.AltSource == (T, AltSource),
 		L.Target	== (T, Target),
-		L.AltTarget == (T, AltTarget)> () -> L
+		L.AltTarget == (T, AltTarget)
 	{
 		let set: ((T, AltTarget), (T, Source)) -> (T, AltSource) = { (t0, t1) in
 			(t0.0, self.set(t0.1, to: t1.1))

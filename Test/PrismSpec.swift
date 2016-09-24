@@ -4,9 +4,9 @@
 /// These are implemented the [typelift/Focus](https://github.com/typelift/Focus) to the reference.
 
 import XCTest
-import Bass
 import L
 import SwiftCheck
+import Either
 
 class LPrismSpec: XCTestCase {
 	func testPrismLaws() {
