@@ -105,9 +105,7 @@ public extension PrismGenerator {
 		P.AltTarget == (AltTarget, T)
 	{
 		let tryGet: (Source, T) -> Either<(AltSource, T), (Target, T)> = { (s, x) in
-			self.tryGet(from: s)
-				.map{ ($0, x) }
-				.mapLeft{ ($0, x) }
+			self.tryGet(from: s).bimap(leftBy: { ($0, x) }, rightBy: { ($0, x) })
 		}
 		
 		return P (
@@ -123,9 +121,7 @@ public extension PrismGenerator {
 		P.AltTarget == (T, AltTarget)
 	{
 		let tryGet: (T, Source) -> Either<(T, AltSource), (T, Target)> = { (x, s) in
-			self.tryGet(from: s)
-				.map{ (x, $0) }
-				.mapLeft{ (x, $0) }
+			self.tryGet(from: s).bimap(leftBy: { (x, $0) }, rightBy: { (x, $0) })
 		}
 		
 		return P (
@@ -142,7 +138,7 @@ public extension PrismGenerator {
 	{
 		let tryGet: (Either<Source, T>) -> Either<Either<AltSource, T>, Either<Target, T>> = { e in
 			e.either(
-				ifLeft: { self.tryGet(from: $0).map(Either.left).mapLeft(Either.left) },
+				ifLeft: { self.tryGet(from: $0).bimap(leftBy: Either.left, rightBy: Either.left) },
 				ifRight: Either.right <<< Either.right
 			)
 		}
@@ -162,7 +158,7 @@ public extension PrismGenerator {
 		let tryGet: (Either<T, Source>) -> Either<Either<T, AltSource>, Either<T, Target>> = { e in
 			e.either(
 				ifLeft: Either.left <<< Either.left,
-				ifRight: { self.tryGet(from: $0).map(Either.right).mapLeft(Either.right) }
+				ifRight: { self.tryGet(from: $0).bimap(leftBy: Either.right, rightBy: Either.right) }
 			)
 		}
 		
