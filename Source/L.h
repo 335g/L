@@ -3,7 +3,7 @@
 //  L
 //
 //  Created by Yoshiki Kudo on 2016/06/29.
-//  Copyright © 2016年 Yoshiki Kudo. All rights reserved.
+//  Copyright © 2017 Yoshiki Kudo. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
