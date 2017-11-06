@@ -1,4 +1,4 @@
-//  Copyright © 2016 Yoshiki Kudo. All rights reserved.
+//  Copyright © 2017 Yoshiki Kudo. All rights reserved.
 
 // MARK: - LLens
 
@@ -19,25 +19,6 @@ public struct LLens<S, T, A, B> {
 	}
 }
 
-//extension LLens: LensGenerator {
-//    public typealias Source = S
-//    public typealias AltSource = T
-//    public typealias Target = A
-//    public typealias AltTarget = B
-//
-//    public func get(from: S) -> A {
-//        return _get(from)
-//    }
-//
-//    public func modify(_ x: S, as f: @escaping (A) -> B) -> T {
-//        return _set(f(_get(x)), x)
-//    }
-//
-//    public func set(_ y: B, to x: S) -> T {
-//        return _set(y, x)
-//    }
-//}
-
 // MARK: - Lens
 
 ///
@@ -46,36 +27,6 @@ public struct LLens<S, T, A, B> {
 /// - parameter S:
 /// - parameter A:
 public typealias Lens<S, A> = LLens<S, S, A, A>
-//public struct Lens<S, A> {
-//    fileprivate let _get: (S) -> A
-//    fileprivate let _set: (A, S) -> S
-//
-//    public init(get: @escaping (S) -> A, set: @escaping (A, S) -> S) {
-//        _get = get
-//        _set = set
-//    }
-//}
-
-//extension Lens: LensGenerator {
-//    public typealias Source = S
-//    public typealias AltSource = S
-//    public typealias Target = A
-//    public typealias AltTarget = A
-//
-//    public func get(from: S) -> A {
-//        return _get(from)
-//    }
-//
-//    public func modify(_ x: S, as f: @escaping (A) -> A) -> S {
-//        return _set(f(_get(x)), x)
-//    }
-//
-//    public func set(_ y: A, to x: S) -> S {
-//        return _set(y, x)
-//    }
-//}
-
-
 
 // MARK: - LensProtocol
 
@@ -99,12 +50,6 @@ extension LLens: LensProtocol {
         return _set(y, x)
     }
 }
-
-//// MARK: - LensGenerator
-//
-//public protocol LensGenerator: LensProtocol {
-//    init(get: @escaping (Source) -> Target, set: @escaping (AltTarget, Source) -> AltSource)
-//}
 
 extension LensProtocol {
     public func split<L>(_ other: L) -> LLens<(Source, L.Source), (AltSource, L.AltSource), (Target, L.Target), (AltTarget, L.AltTarget)> where L: LensProtocol {
@@ -137,60 +82,6 @@ extension LensProtocol {
             get: { (t, s) in (t, self.get(from: s)) },
             set: set)
     }
-}
-
-extension LensProtocol {
-//    public func split <S1, T1, A1, B1, L1: LensGenerator, L2: LensGenerator> (_ other: L1) -> L2 where
-//        L1.Source        == S1,
-//        L1.AltSource    == T1,
-//        L1.Target        == A1,
-//        L1.AltTarget    == B1,
-//        L2.Source        == (Source, S1),
-//        L2.AltSource    == (AltSource, T1),
-//        L2.Target        == (Target, A1),
-//        L2.AltTarget    == (AltTarget, B1)
-//    {
-//        let set: ((AltTarget, B1), (Source, S1)) -> (AltSource, T1) = { (t0, t1) in
-//            (self.set(t0.0, to: t1.0), other.set(t0.1, to: t1.1))
-//        }
-//
-//        return L2(
-//            get: { (self.get(from: $0), other.get(from: $1)) },
-//            set: set
-//        )
-//    }
-	
-//    public func first <T, L: LensGenerator> () -> L where
-//        L.Source    == (Source, T),
-//        L.AltSource == (AltSource, T),
-//        L.Target    == (Target, T),
-//        L.AltTarget == (AltTarget, T)
-//    {
-//        let set: ((AltTarget, T), (Source, T)) -> (AltSource, T) = { (t0, t1) in
-//            (self.set(t0.0, to: t1.0), t0.1)
-//        }
-//
-//        return L(
-//            get: { (s, t) in (self.get(from: s), t) },
-//            set: set
-//        )
-//    }
-	
-//    public func second <T, L: LensGenerator> () -> L where
-//        L.Source    == (T, Source),
-//        L.AltSource == (T, AltSource),
-//        L.Target    == (T, Target),
-//        L.AltTarget == (T, AltTarget)
-//    {
-//        let set: ((T, AltTarget), (T, Source)) -> (T, AltSource) = { (t0, t1) in
-//            (t0.0, self.set(t0.1, to: t1.1))
-//        }
-//
-//        return L(
-//            get: { (t, s) in (t, self.get(from: s)) },
-//            set: set
-//        )
-//    }
 }
 
 extension LensProtocol {
