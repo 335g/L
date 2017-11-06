@@ -17,76 +17,49 @@ public struct Getter<S, A> {
 	}
 }
 
-extension Getter: GetterGenerator {
-	public typealias Source = S
-	public typealias Target = A
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-}
-
 // MARK: - GetterProtocol
 
 public protocol GetterProtocol: SimpleOpticsProtocol {
-	func get(from: Source) -> Target
+	func get(from source: Source) -> Target
 }
 
-// MARK: - GetterGenerator
-
-public protocol GetterGenerator: GetterProtocol {
-	init(get: @escaping (Source) -> Target)
+extension Getter: GetterProtocol {
+    public typealias Source = S
+    public typealias Target = A
+    
+    public func get(from source: S) -> A {
+        return _get(source)
+    }
 }
 
-public extension GetterGenerator {
-	public func split <S, A, G1: GetterGenerator, G2: GetterGenerator> (_ other: G1) -> G2 where
-		G1.Source == S,
-		G1.Target == A,
-		G2.Source == (Source, S),
-		G2.Target == (Target, A)
-	{
-		return G2(get:
-			{ (s1, s2) in
-				(self.get(from: s1), other.get(from: s2))
-			}
-		)
-	}
-	
-	public func choice <S, G1: GetterGenerator, G2: GetterGenerator> (_ other: G1) -> G2 where
-		G1.Source == S,
-		G1.Target == Target,
-		G2.Source == Either<Source, S>,
-		G2.Target == Target
-	{
-		return G2(get: { $0.either(ifLeft: self.get, ifRight: other.get) })
-	}
-	
-	public func first <T, G: GetterGenerator>() -> G where
-		G.Source == (Source, T),
-		G.Target == (Target, T)
-	{
-		return G(get: { (s, t) in (self.get(from: s), t) })
-	}
-	
-	public func second <T, G: GetterGenerator>() -> G where
-		G.Source == (T, Source),
-		G.Target == (T, Target)
-	{
-		return G(get: { (t, s) in (t, self.get(from: s)) })
-	}
-	
-	public func left <T, G: GetterGenerator>() -> G where
-		G.Source == Either<Source, T>,
-		G.Target == Either<Target, T>
-	{
-		return G(get: { $0.mapLeft(self.get) })
-	}
-	
-	public func right <T, G: GetterGenerator>() -> G where
-		G.Source == Either<T, Source>,
-		G.Target == Either<T, Target>
-	{
-		return G(get: { $0.map(self.get) })
-	}
+extension Getter {
+    public func split<G>(_ other: G) -> Getter<(Source, G.Source), (Target, G.Target)> where G: GetterProtocol {
+        return Getter<(Source, G.Source), (Target, G.Target)>(get: { (s1, s2) in
+            (self.get(from: s1), other.get(from: s2))
+        })
+    }
+    
+    public func choice<G>(_ other: G) -> Getter<Either<Source, G.Source>, Target> where G: GetterProtocol, G.Target == Target {
+        return Getter<Either<Source, G.Source>, Target>(get: { $0.either(ifLeft: self.get, ifRight: other.get) })
+    }
+    
+    public func first<T>() -> Getter<(Source, T), (Target, T)> {
+        return Getter<(Source, T), (Target, T)>(get: { (s, t) in
+            (self.get(from: s), t)
+        })
+    }
+    
+    public func second<T>() -> Getter<(T, Source), (T, Target)> {
+        return Getter<(T, Source), (T, Target)>(get: { (t, s) in
+            (t, self.get(from: s))
+        })
+    }
+    
+    public func left<T>() -> Getter<Either<Source, T>, Either<Target, T>> {
+        return Getter<Either<Source, T>, Either<Target, T>>(get: { $0.mapLeft(self.get) })
+    }
+    
+    public func right<T>() -> Getter<Either<T, Source>, Either<T, Target>> {
+        return Getter<Either<T, Source>, Either<T, Target>>(get: { $0.map(self.get) })
+    }
 }
-

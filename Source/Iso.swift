@@ -21,22 +21,7 @@ public struct LIso<S, T, A, B> {
 	}
 }
 
-extension LIso: IsoGenerator {
-	public typealias Source = S
-	public typealias AltSource = T
-	public typealias Target = A
-	public typealias AltTarget = B
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-	
-	public func reverseGet(from: B) -> T {
-		return _reverseGet(from)
-	}
-}
-
-public extension LIso {
+extension LIso {
 	public var reverse: LIso<B, A, T, S> {
 		return LIso<B, A, T, S>(get: _reverseGet, reverseGet: _get)
 	}
@@ -49,43 +34,27 @@ public extension LIso {
 ///
 /// - parameter S: The source/target of the isomorphism
 /// - parameter A: The target/source of the isomorphism
-public struct Iso<S, A> {
-	fileprivate let _get: (S) -> A
-	fileprivate let _reverseGet: (A) -> S
-	
-	public init(get: @escaping (S) -> A, reverseGet: @escaping (A) -> S) {
-		_get = get
-		_reverseGet = reverseGet
-	}
-}
-
-extension Iso: IsoGenerator {
-	public typealias Source = S
-	public typealias AltSource = S
-	public typealias Target = A
-	public typealias AltTarget = A
-	
-	public func get(from: S) -> A {
-		return _get(from)
-	}
-	
-	public func reverseGet(from: A) -> S {
-		return _reverseGet(from)
-	}
-}
-
-public extension Iso {
-	public var reverse: Iso<A, S> {
-		return Iso<A, S>(get: _reverseGet, reverseGet: _get)
-	}
-}
-
-
+public typealias Iso<S, A> = LIso<S, S, A, A>
 
 // MARK: - IsoProtocol
 
 public protocol IsoProtocol: PrismProtocol, LensProtocol {
 	func reverseGet(from: AltTarget) -> AltSource
+}
+
+extension LIso: IsoProtocol {
+    public typealias Source = S
+    public typealias AltSource = T
+    public typealias Target = A
+    public typealias AltTarget = B
+    
+    public func get(from source: S) -> A {
+        return _get(source)
+    }
+    
+    public func reverseGet(from: B) -> T {
+        return _reverseGet(from)
+    }
 }
 
 public extension IsoProtocol {
@@ -94,114 +63,56 @@ public extension IsoProtocol {
 	}
 }
 
-// MARK: - IsoGenerator
-
-public protocol IsoGenerator: IsoProtocol {
-	init(get: @escaping (Source) -> Target, reverseGet: @escaping (AltTarget) -> AltSource)
+extension IsoProtocol {
+    public func split<I>(_ other: I) -> LIso<(Source, I.Source), (AltSource, I.AltSource), (Target, I.Target), (AltTarget, I.AltTarget)> where I: IsoProtocol {
+        return LIso<(Source, I.Source), (AltSource, I.AltSource), (Target, I.Target), (AltTarget, I.AltTarget)>(
+            get: { (self.get(from: $0), other.get(from: $1)) },
+            reverseGet: { (self.reverseGet(from: $0), other.reverseGet(from: $1)) })
+    }
+    
+    public func first<T>() -> LIso<(Source, T), (AltSource, T), (Target, T), (AltTarget, T)> {
+        return LIso<(Source, T), (AltSource, T), (Target, T), (AltTarget, T)>(
+            get: { (s, t) in (self.get(from: s), t) },
+            reverseGet: { (s, t) in (self.reverseGet(from: s), t) })
+    }
+    
+    public func second<T>() -> LIso<(T, Source), (T, AltSource), (T, Target), (T, AltTarget)> {
+        return LIso<(T, Source), (T, AltSource), (T, Target), (T, AltTarget)>(
+            get: { (t, s) in (t, self.get(from: s)) },
+            reverseGet: { (t, s) in (t, self.reverseGet(from: s)) })
+    }
+    
+    public func left<T>() -> LIso<Either<Source, T>, Either<AltSource, T>, Either<Target, T>, Either<AltTarget, T>> {
+        return LIso<Either<Source, T>, Either<AltSource, T>, Either<Target, T>, Either<AltTarget, T>>(
+            get: { $0.mapLeft(self.get) },
+            reverseGet: { $0.mapLeft(self.reverseGet) })
+    }
+    
+    public func right<T>() -> LIso<Either<T, Source>, Either<T, AltSource>, Either<T, Target>, Either<T, AltTarget>> {
+        return LIso<Either<T, Source>, Either<T, AltSource>, Either<T, Target>, Either<T, AltTarget>>(
+            get: { $0.map(self.get) },
+            reverseGet: { $0.map(self.reverseGet) })
+    }
 }
 
-public extension IsoGenerator {
-	public func split <S1, T1, A1, B1, I1: IsoGenerator, I2: IsoGenerator> (_ other: I1) -> I2 where
-		I1.Source		== S1,
-		I1.AltSource	== T1,
-		I1.Target		== A1,
-		I1.AltTarget	== B1,
-		I2.Source		== (Source, S1),
-		I2.AltSource	== (AltSource, T1),
-		I2.Target		== (Target, A1),
-		I2.AltTarget	== (AltTarget, B1)
-	{
-		return I2(
-			get: { (self.get(from: $0), other.get(from: $1)) },
-			reverseGet: { (self.reverseGet(from: $0), other.reverseGet(from: $1)) }
-		)
-	}
-	
-	public func first <T, I: IsoGenerator> () -> I where
-		I.Source	== (Source, T),
-		I.AltSource == (AltSource, T),
-		I.Target	== (Target, T),
-		I.AltTarget == (AltTarget, T)
-	{
-		return I(
-			get: { (s, t) in (self.get(from: s), t) },
-			reverseGet: { (s, t) in (self.reverseGet(from: s), t) }
-		)
-	}
-	
-	public func second <T, I: IsoGenerator> () -> I where
-		I.Source	== (T, Source),
-		I.AltSource == (T, AltSource),
-		I.Target	== (T, Target),
-		I.AltTarget == (T, AltTarget)
-	{
-		return I(
-			get: { (t, s) in (t, self.get(from: s)) },
-			reverseGet: { (t, s) in (t, self.reverseGet(from: s)) }
-		)
-	}
-	
-	public func left <T, I: IsoGenerator> () -> I where
-		I.Source	== Either<Source, T>,
-		I.AltSource == Either<AltSource, T>,
-		I.Target	== Either<Target, T>,
-		I.AltTarget == Either<AltTarget, T>
-	{
-		return I(
-			get: { $0.mapLeft(self.get) },
-			reverseGet: { $0.mapLeft(self.reverseGet) }
-		)
-	}
-	
-	public func right <T, I: IsoGenerator> () -> I where
-		I.Source	== Either<T, Source>,
-		I.AltSource == Either<T, AltSource>,
-		I.Target	== Either<T, Target>,
-		I.AltTarget == Either<T, AltTarget>
-	{
-		return I(
-			get: { $0.map(self.get) },
-			reverseGet: { $0.map(self.reverseGet) }
-		)
-	}
-}
-
-public extension IsoGenerator {
-	public var asLIso: LIso<Source, AltSource, Target, AltTarget> {
+public extension IsoProtocol {
+	public var iso: LIso<Source, AltSource, Target, AltTarget> {
 		return LIso(get: get, reverseGet: reverseGet)
 	}
 	
-	public var asLLens: LLens<Source, AltSource, Target, AltTarget> {
+	public var lens: LLens<Source, AltSource, Target, AltTarget> {
 		return LLens(get: get, set: set)
 	}
 	
-	public var asLPrism: LPrism<Source, AltSource, Target, AltTarget> {
+	public var prism: LPrism<Source, AltSource, Target, AltTarget> {
 		return LPrism(tryGet: tryGet, reverseGet: reverseGet)
 	}
 	
-	public var asLSetter: LSetter<Source, AltSource, Target, AltTarget> {
+	public var setter: LSetter<Source, AltSource, Target, AltTarget> {
 		return LSetter(modify: modify)
 	}
 	
-	public var asGetter: Getter<Source, Target> {
+	public var getter: Getter<Source, Target> {
 		return Getter(get: get)
-	}
-}
-
-public extension IsoGenerator where Source == AltSource, Target == AltTarget {
-	public var asLens: Lens<Source, Target> {
-		return Lens(get: get, set: set)
-	}
-	
-	public var asPrism: Prism<Source, Target> {
-		return Prism(tryGet: tryGet, reverseGet: reverseGet)
-	}
-	
-	public var asSetter: Setter<Source, Target> {
-		return Setter(modify: modify)
-	}
-	
-	public var asIso: Iso<Source, Target> {
-		return Iso(get: get, reverseGet: reverseGet)
 	}
 }
